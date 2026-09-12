@@ -139,6 +139,7 @@
   function tileStatus(status){
     lastNetworkStatus=status;const el=$('map-status');
     if(status==='ready'){el.hidden=true;return;}
+    if(status==='loading'){el.textContent='Loading basemap…';el.hidden=false;return;}
     if(status==='local'){el.textContent='Local file mode: plotting, editing, and exports work. To load the live map and place search, run Start.command, Start.bat, or start.py from the app folder.';el.hidden=false;return;}
     el.innerHTML=`${status==='slow'?'The map is taking longer to load.':'Map tiles could not load.'} Your points and exports still work. Check your internet connection.<button id="retry-map">Retry</button>`;el.hidden=false;
     $('retry-map').onclick=()=>{el.hidden=true;map.retryTiles();};

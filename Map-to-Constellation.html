@@ -263,7 +263,10 @@ dialog p { color: var(--secondary); font-size: .875rem; line-height: 1.6; }
   .export-panel .preview-stage { grid-column: 1; grid-row: 2 / span 4; min-height: 248px; height: auto; margin-bottom: 12px; }
   .export-panel .preview-controls { grid-column: 1; }
   .export-panel .export-details { grid-column: 2; grid-row: 2; margin-top: 16px; }
-  .export-panel .export-scale, .export-panel .export-button { grid-column: 2; }
+  .export-panel .export-scale { grid-column: 2; grid-row: 3; }
+  .export-panel #export-png { grid-column: 2; grid-row: 4; }
+  .export-panel #export-svg { grid-column: 2; grid-row: 5; }
+  .export-panel .preview-controls { grid-row: 6; }
   .export-panel .export-caption, .export-panel .export-warning, .export-panel .precision-card, .export-panel .backup-link { grid-column: 1 / -1; }
   .brand { width: 216px; }
 }
@@ -408,7 +411,7 @@ dialog p { color: var(--secondary); font-size: .875rem; line-height: 1.6; }
           <div class="tile-layer" aria-hidden="true"></div>
           <svg class="point-layer" xmlns="http://www.w3.org/2000/svg" aria-label="Plotted points"></svg>
           <div class="map-search" data-map-control>
-            <form id="search-form"><svg class="icon"><use href="#i-search"/></svg><label class="sr-only" for="search-input">Search for a place or coordinates</label><input id="search-input" placeholder="Find a place or lat, lng" autocomplete="off" maxlength="180"><button id="search-submit" type="submit" aria-label="Search"><svg class="icon"><use href="#i-arrow"/></svg></button></form>
+            <form id="search-form"><svg class="icon"><use href="#i-search"/></svg><label class="sr-only" for="search-input">Search for a place or coordinates</label><input id="search-input" placeholder="Search places" autocomplete="off" maxlength="180"><button id="search-submit" type="submit" aria-label="Search"><svg class="icon"><use href="#i-arrow"/></svg></button></form>
             <div id="search-results" class="search-results" hidden></div>
           </div>
           <button class="map-location icon-button" data-map-control id="locate-button" title="Use my location" aria-label="Use my location"><svg class="icon"><use href="#i-target"/></svg></button>
@@ -1590,6 +1593,7 @@ maplibregl.setWorkerUrl(URL.createObjectURL(new Blob(["(()=>{/**\n* MapLibre GL 
     basemapStyle(){return `https://tiles.openfreemap.org/styles/${this.appearance.matches?'dark':'positron'}`;}
     initBasemap(){
       if(!this.networkAllowed)return;
+      this.options.onTileStatus('loading');
       if(!this.appearance){
         this.appearance=window.matchMedia('(prefers-color-scheme: dark)');
         this.appearance.addEventListener('change',()=>{if(this.basemap)this.basemap.setStyle(this.basemapStyle());});
@@ -1606,7 +1610,17 @@ maplibregl.setWorkerUrl(URL.createObjectURL(new Blob(["(()=>{/**\n* MapLibre GL 
           canvasContextAttributes:{antialias:true}
         });
         this.basemap.on('style.load',()=>{
-          if(!this.appearance.matches){
+          if(this.appearance.matches){
+            for(const layer of this.basemap.getStyle().layers){
+              if(layer.type==='background')this.basemap.setPaintProperty(layer.id,'background-color','#20262d');
+              if(layer.type==='symbol'&&layer.layout?.['text-field']){
+                this.basemap.setPaintProperty(layer.id,'text-color','#b6c2ce');
+                this.basemap.setPaintProperty(layer.id,'text-halo-color','#18212b');
+              }
+              if(layer.type==='fill'&&layer['source-layer']==='water')this.basemap.setPaintProperty(layer.id,'fill-color','#193344');
+              if(layer.type==='fill'&&layer['source-layer']==='park')this.basemap.setPaintProperty(layer.id,'fill-color','#293d35');
+            }
+          }else{
             for(const [layer,color] of Object.entries({water:'#cfe3ef',park:'#e4eddd',landcover_wood:'#dbe7d4',building:'#e8e6e1'})){
               if(this.basemap.getLayer(layer))this.basemap.setPaintProperty(layer,'fill-color',color);
             }
@@ -1775,6 +1789,7 @@ maplibregl.setWorkerUrl(URL.createObjectURL(new Blob(["(()=>{/**\n* MapLibre GL 
   function tileStatus(status){
     lastNetworkStatus=status;const el=$('map-status');
     if(status==='ready'){el.hidden=true;return;}
+    if(status==='loading'){el.textContent='Loading basemap…';el.hidden=false;return;}
     if(status==='local'){el.textContent='Local file mode: plotting, editing, and exports work. To load the live map and place search, run Start.command, Start.bat, or start.py from the app folder.';el.hidden=false;return;}
     el.innerHTML=`${status==='slow'?'The map is taking longer to load.':'Map tiles could not load.'} Your points and exports still work. Check your internet connection.<button id="retry-map">Retry</button>`;el.hidden=false;
     $('retry-map').onclick=()=>{el.hidden=true;map.retryTiles();};

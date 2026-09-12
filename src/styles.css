@@ -247,7 +247,10 @@ dialog p { color: var(--secondary); font-size: .875rem; line-height: 1.6; }
   .export-panel .preview-stage { grid-column: 1; grid-row: 2 / span 4; min-height: 248px; height: auto; margin-bottom: 12px; }
   .export-panel .preview-controls { grid-column: 1; }
   .export-panel .export-details { grid-column: 2; grid-row: 2; margin-top: 16px; }
-  .export-panel .export-scale, .export-panel .export-button { grid-column: 2; }
+  .export-panel .export-scale { grid-column: 2; grid-row: 3; }
+  .export-panel #export-png { grid-column: 2; grid-row: 4; }
+  .export-panel #export-svg { grid-column: 2; grid-row: 5; }
+  .export-panel .preview-controls { grid-row: 6; }
   .export-panel .export-caption, .export-panel .export-warning, .export-panel .precision-card, .export-panel .backup-link { grid-column: 1 / -1; }
   .brand { width: 216px; }
 }

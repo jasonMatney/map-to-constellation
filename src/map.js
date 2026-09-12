@@ -84,6 +84,7 @@
     basemapStyle(){return `https://tiles.openfreemap.org/styles/${this.appearance.matches?'dark':'positron'}`;}
     initBasemap(){
       if(!this.networkAllowed)return;
+      this.options.onTileStatus('loading');
       if(!this.appearance){
         this.appearance=window.matchMedia('(prefers-color-scheme: dark)');
         this.appearance.addEventListener('change',()=>{if(this.basemap)this.basemap.setStyle(this.basemapStyle());});
@@ -100,7 +101,17 @@
           canvasContextAttributes:{antialias:true}
         });
         this.basemap.on('style.load',()=>{
-          if(!this.appearance.matches){
+          if(this.appearance.matches){
+            for(const layer of this.basemap.getStyle().layers){
+              if(layer.type==='background')this.basemap.setPaintProperty(layer.id,'background-color','#20262d');
+              if(layer.type==='symbol'&&layer.layout?.['text-field']){
+                this.basemap.setPaintProperty(layer.id,'text-color','#b6c2ce');
+                this.basemap.setPaintProperty(layer.id,'text-halo-color','#18212b');
+              }
+              if(layer.type==='fill'&&layer['source-layer']==='water')this.basemap.setPaintProperty(layer.id,'fill-color','#193344');
+              if(layer.type==='fill'&&layer['source-layer']==='park')this.basemap.setPaintProperty(layer.id,'fill-color','#293d35');
+            }
+          }else{
             for(const [layer,color] of Object.entries({water:'#cfe3ef',park:'#e4eddd',landcover_wood:'#dbe7d4',building:'#e8e6e1'})){
               if(this.basemap.getLayer(layer))this.basemap.setPaintProperty(layer,'fill-color',color);
             }

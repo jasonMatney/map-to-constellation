@@ -1,5 +1,11 @@
 # Map-to-Constellation — test report
 
+## Visual browser QA — September 12, 2026
+
+Inspected the live local app at 1440 × 1000, 820 × 1000, 390 × 844, and 320 × 740. Phone and tablet DOM width checks found no horizontal overflow. Verified actual keyboard color editing, point selection, delete/undo restoration to seven points, PNG and SVG export success, pattern view, and zoom lock. No browser console errors were captured in the final checks; downloaded file bytes were not inspected in this pass.
+
+Fixed tablet export grid placement to remove the gap above the export controls, shortened the search placeholder, added an immediate basemap loading state, and increased dark-map label contrast with clearer water and park colors. Rechecked the tablet correction and dark-map appearance. Dark appearance used an ignored local HTML fixture that forces the dark media query; automatic OS theme switching and physical touch devices were not tested. The 31 core tests and build passed.
+
 ## Vector basemap update — September 12, 2026
 
 Replaced raster tiles with OpenFreeMap vector styles through MapLibre 6.9.0, with a bundled worker and automatic light/dark selection. The local browser loaded live Positron streets and labels with no captured errors. All 31 core tests passed; dependency installation reported zero vulnerabilities. The broad browser suite and dark appearance were not exercised in this update.

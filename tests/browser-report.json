@@ -1,0 +1,98 @@
+{
+  "mode": "In-memory HTML; localStorage adapter; network prohibited by environment",
+  "external_services": "No live tile/geocoder verification; in-memory mode skips HTTP-only integrations",
+  "checks": [
+    {
+      "test": "Initial page loads without JavaScript errors; empty exports are disabled",
+      "result": "PASS"
+    },
+    {
+      "test": "Click plotting round-trips to the exact clicked map pixel",
+      "result": "PASS"
+    },
+    {
+      "test": "Individual shape/color edits work; untrusted point names remain plain text",
+      "result": "PASS"
+    },
+    {
+      "test": "Exact coordinate entry retains precision and point styling is independent",
+      "result": "PASS"
+    },
+    {
+      "test": "Size and explicit coordinate editing update the selected point",
+      "result": "PASS"
+    },
+    {
+      "test": "Delete, undo, and redo restore exact point data",
+      "result": "PASS"
+    },
+    {
+      "test": "Panning leaves exports byte-for-byte equivalent; zoom lock blocks wheel zoom",
+      "result": "PASS"
+    },
+    {
+      "test": "Explicit zoom changes center spacing uniformly rather than rearranging points",
+      "result": "PASS"
+    },
+    {
+      "test": "Actual SVG download matches every on-map displacement and contains no geographic details",
+      "result": "PASS"
+    },
+    {
+      "test": "Rendered SVG map transforms match canonical screen positions to subpixel precision",
+      "result": "PASS"
+    },
+    {
+      "test": "Actual PNG has identical dimensions, transparent edges, and exact point center colors",
+      "result": "PASS"
+    },
+    {
+      "test": "JSON backup and local-storage API round-trip preserve coordinates, styles, and map scale",
+      "result": "PASS"
+    },
+    {
+      "test": "Invalid project imports leave the current project untouched",
+      "result": "PASS"
+    },
+    {
+      "test": "A downloaded project can be reopened with identical content",
+      "result": "PASS"
+    },
+    {
+      "test": "Coordinate search navigates without adding or moving any points",
+      "result": "PASS"
+    },
+    {
+      "test": "Offline place search provides actionable setup guidance",
+      "result": "PASS"
+    },
+    {
+      "test": "Date-line neighbors render and export together without rewrapping",
+      "result": "PASS"
+    },
+    {
+      "test": "Oversized PNG is refused without resizing; full-scale SVG remains available",
+      "result": "PASS"
+    },
+    {
+      "test": "All six icon shapes export without clipping",
+      "result": "PASS"
+    },
+    {
+      "test": "Desktop interaction suite produces no uncaught JavaScript errors",
+      "result": "PASS"
+    },
+    {
+      "test": "Mobile viewport has no horizontal overflow; touch plotting and PNG download work",
+      "result": "PASS"
+    },
+    {
+      "test": "Single-file edition supports offline plotting/export and explains live-map setup",
+      "result": "PASS"
+    },
+    {
+      "test": "Corrupt local data is not silently overwritten",
+      "result": "PASS"
+    }
+  ]
+}

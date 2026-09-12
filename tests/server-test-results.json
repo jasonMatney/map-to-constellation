@@ -1,0 +1,20 @@
+[
+  {
+    "server": "Python launcher",
+    "result": "PASS",
+    "checks": [
+      "index served",
+      "JS asset served",
+      "referrer header present"
+    ]
+  },
+  {
+    "server": "Node server",
+    "result": "PASS",
+    "checks": [
+      "index served",
+      "JS asset served",
+      "referrer header present"
+    ]
+  }
+]

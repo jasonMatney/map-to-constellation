@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#F6F5F0">
+  <meta name="description" content="Turn real places into a constellation of shapes. Export precisely spaced, tightly cropped PNG and SVG artwork without the map.">
+  <title>Map-to-Constellation — Your places, a new perspective</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232B5148'/%3E%3Ccircle cx='10' cy='10' r='3' fill='%23F4DD9C'/%3E%3Ccircle cx='22' cy='14' r='3' fill='%23C5B7D7'/%3E%3Ccircle cx='13' cy='23' r='3' fill='%23E4A484'/%3E%3C/svg%3E">
+  <style>
+:root{--paper:#f6f5f0;--panel:#fcfbf8;--ink:#2b3531;--muted:#78817a;--line:#e5e6de;--green:#2d5549;--soft-green:#eef2e9;--orange:#c2714f;--radius:12px;--shadow:0 4px 20px #23362b0c;--font:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:13px;-webkit-font-smoothing:antialiased}button,input{font:inherit}button,a,input,summary{-webkit-tap-highlight-color:transparent}button{cursor:pointer;color:inherit}button:disabled{cursor:not-allowed;opacity:.38}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #789c89;outline-offset:3px}input:focus-visible{outline:2px solid #7f9e8b;outline-offset:1px}button,a{touch-action:manipulation}button{transition:background .15s,border-color .15s,box-shadow .15s}a{color:inherit}input[type=text],input[type=number]{min-width:0}input{border:1px solid var(--line);border-radius:7px;padding:9px 10px;background:#fff;color:var(--ink)}input::placeholder{color:#929a93}input:invalid:not(:placeholder-shown){box-shadow:none}[hidden]{display:none!important}.svg-library{width:0;height:0;position:absolute;overflow:hidden}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.icon{width:19px;height:19px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}.button{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 15px;border:1px solid #d8ded5;border-radius:8px;background:#fff;font-weight:550;font-size:12px;min-height:40px}.button:hover:not(:disabled){border-color:#8f9f92;background:#f8faf5}.button.primary{background:var(--green);border-color:var(--green);color:#fff}.button.primary:hover:not(:disabled){background:#224336}.button.small{min-height:34px;padding:8px 10px;font-size:11px}.button.subtle{background:transparent;border-color:transparent}.button.subtle:hover{background:#ebece5;border-color:transparent}.full{width:100%}.icon-button{border:0;background:transparent;width:35px;height:35px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}.icon-button:hover:not(:disabled){background:#ecefe6}.text-button{background:transparent;border:0;padding:3px 0;display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:550;color:var(--green)}.text-button:hover:not(:disabled){text-decoration:underline}.text-button.danger{color:#aa554d}.text-button .icon{width:14px;height:14px}.eyebrow{font-size:9px;font-weight:650;letter-spacing:1.55px;color:#798476;display:block}.topbar{height:80px;display:flex;align-items:center;gap:28px;padding:0 28px;border-bottom:1px solid var(--line);position:relative;background:var(--panel);z-index:30}.brand{display:flex;align-items:center;gap:13px;text-decoration:none;min-width:244px}.brand strong{font-weight:650;font-size:23px;letter-spacing:-.8px;line-height:1.1}.brand small{display:block;font-size:7px;letter-spacing:1.7px;color:#8b9288;margin-top:6px}.brand-mark{width:35px;height:36px;position:relative;display:block}.brand-mark span{position:absolute;width:10px;height:10px;border-radius:50%}.brand-mark span:nth-child(1){left:1px;top:2px;background:#c2714f}.brand-mark span:nth-child(2){left:25px;top:8px;background:#a9bca2;width:8px;height:8px}.brand-mark span:nth-child(3){left:9px;top:25px;background:#8b82a4;width:9px;height:9px}.brand-mark span:nth-child(4){left:18px;top:17px;background:#d5b26e;width:6px;height:6px}.project-heading{display:flex;flex:1;gap:18px;align-items:center;min-width:0}.project-heading input{width:220px;max-width:100%;border-color:transparent;background:transparent;font-size:13px;padding:7px 0;text-overflow:ellipsis}.project-heading input:hover{border-bottom-color:#b2b8ab;border-radius:0}.save-status{font-size:10px;color:#8a9586;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}.save-status>span{width:5px;height:5px;background:#839c76;border-radius:50%}.save-status.unsaved{color:#a57144}.save-status.unsaved>span{background:#c69454}.top-actions{display:flex;gap:8px;align-items:center}.chevron{color:#84917f;padding-left:7px}.project-menu{position:absolute;top:66px;right:65px;width:266px;padding:7px;background:#fff;border:1px solid var(--line);border-radius:11px;box-shadow:0 8px 36px #26372a20;z-index:50}.project-menu button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:12px 9px;border:0;border-radius:5px;background:#fff;font-size:12px}.project-menu button:hover,.project-menu button:focus{background:var(--soft-green)}.project-menu small{margin-left:auto;color:#929a8d;font-size:9px}.project-menu hr{border:0;border-top:1px solid var(--line);margin:6px 4px}.workspace{display:grid;grid-template-columns:280px minmax(320px,1fr) 288px;height:calc(100dvh - 111px);min-height:620px;max-width:2200px;margin:auto}.sidebar{background:var(--panel);padding:29px 23px 18px;overflow:auto;scrollbar-width:thin;scrollbar-color:#d8dcd2 transparent}.palette-panel{border-right:1px solid var(--line)}.section-heading h1,.section-heading h2{font-size:20px;font-weight:580;letter-spacing:-.6px;margin:10px 0 7px}.section-heading p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}.editing-context{display:flex;justify-content:space-between;gap:8px;align-items:center;margin:28px 0 17px;min-height:20px;color:#6d7c6e;font-size:10px}.editing-context>span{max-width:145px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.editing-context.is-editing{color:var(--green);font-weight:600}.editing-context.is-editing>span:before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:#c2714f;margin-right:6px}.text-button#deselect{font-size:10px}fieldset{padding:0;margin:0;border:0;min-width:0}legend{font-weight:550;font-size:11px;width:100%;padding:0;margin:0 0 12px}legend>span{float:right;color:#929a8d;font-weight:400;font-size:10px}.shape-options{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.shape-option{background:#fff;border:1px solid var(--line);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;height:61px;font-size:9px;color:#7c8478}.shape-option svg{width:19px;height:19px;color:#6e7c6c;overflow:visible}.shape-option:hover{border-color:#aab4a2}.shape-option.active{background:#eef2e8;border-color:#92a489;color:#37553c}.shape-option.active svg{color:#3c654b}.color-field{margin-top:23px}.swatches{display:flex;align-items:center;justify-content:space-between;gap:7px;margin:3px 2px 13px}.swatch{width:22px;height:22px;border-radius:50%;border:0;box-shadow:inset 0 0 0 1px #0000000c;position:relative;padding:0}.swatch.active:after{content:"";position:absolute;inset:-4px;border:1px solid currentColor;border-radius:50%}.color-entry{display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:7px;padding:4px 9px 4px 5px;gap:9px;height:39px}.color-picker-label{height:27px;width:30px;display:block;overflow:hidden;border-radius:4px;position:relative;flex-shrink:0}.color-picker-label input{position:absolute;inset:-5px;width:40px;height:37px;padding:0;border:0;background:none;cursor:pointer}.color-entry>input{border:0;padding:3px 0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;flex:1;width:80px;outline-offset:0}.color-entry>span{font-size:9px;color:#92998c;letter-spacing:1px}.size-field{margin-top:24px}.size-field>label{display:flex;justify-content:space-between;font-size:11px;font-weight:550;margin-bottom:11px}.size-field output{color:#8b9584;font-weight:400;font-size:10px}.size-field input{appearance:none;-webkit-appearance:none;width:100%;height:3px;padding:0;border:0;border-radius:2px;background:#e4e8dc;display:block;margin:10px 0 11px;cursor:pointer}.size-field input::-webkit-slider-thumb{appearance:none;width:12px;height:12px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 0 0 1px var(--green)}.size-field input::-moz-range-thumb{width:8px;height:8px;border-radius:50%;background:var(--green);border:2px solid #fff;box-shadow:0 0 0 1px var(--green)}.range-labels{display:flex;justify-content:space-between;color:#a0a697;font-size:9px}.coordinate-details{margin-top:23px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:15px 0}.coordinate-details summary{display:flex;gap:8px;align-items:center;font-size:10px;cursor:pointer;list-style:none}.coordinate-details summary::-webkit-details-marker{display:none}.coordinate-details summary>span{margin-left:auto;font-size:16px;font-weight:300;color:#87927e}.coordinate-details[open] summary>span{transform:rotate(45deg)}.coordinate-details summary .icon{width:15px;height:15px;color:#8a9782}.coordinate-inputs{display:flex;gap:8px;margin:14px 0 10px}.coordinate-inputs label{flex:1;min-width:0;font-size:9px;color:#76816f;display:flex;flex-direction:column;gap:6px}.coordinate-inputs input{width:100%;padding:9px 7px;font-size:11px;-moz-appearance:textfield;appearance:textfield}.coordinate-inputs input::-webkit-inner-spin-button,.coordinate-inputs input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}.points-section{margin-top:23px}.points-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.points-heading h2{font-size:12px;font-weight:550;display:flex;align-items:center;gap:7px;margin:0}.points-heading h2>span{font-size:9px;font-weight:500;background:#ecede6;border-radius:5px;padding:3px 6px;color:#7f8978}.points-heading>button{font-size:10px;color:#89937f}.point-list{max-height:212px;overflow:auto;scrollbar-width:thin;scrollbar-color:#dce0d4 transparent}.point-row{display:flex;width:100%;align-items:center;gap:10px;border:1px solid transparent;border-radius:7px;padding:9px 7px;background:transparent;text-align:left;margin:2px 0;min-height:47px}.point-row:hover{background:#f1f2eb}.point-row.selected{background:#eff3e9;border-color:#dae3d2}.point-row>svg{width:24px;height:24px;overflow:visible;flex-shrink:0}.point-row>span{flex:1;min-width:0}.point-row strong{display:block;font-weight:500;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.point-row small{display:block;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:8px;color:#98a18d;margin-top:4px}.point-row .row-index{font-size:9px;color:#a6ae9b;max-width:21px;text-align:right}.empty-list{text-align:center;padding:13px 0 19px}.empty-list p{font-size:11px;line-height:1.8;color:#939c89;margin:0 0 13px}.empty-list button{font-size:10px}.sidebar-note{font-size:8px;color:#9ca591;display:flex;align-items:center;gap:6px;margin-top:24px;line-height:1.5}.tiny-dot{width:4px;height:4px;border-radius:50%;background:#a4af97;flex-shrink:0}.selected-editor{border-top:1px solid var(--line);padding-top:19px;margin-top:20px}.selected-editor>label{display:flex;justify-content:space-between;font-size:10px;margin-bottom:7px}.selected-editor>label>span{font-size:8px;color:#9aa28f}.selected-editor>input{width:100%;font-size:11px}.micro{font-size:9px;line-height:1.6;color:#8b9580}.selected-editor .danger{margin-top:7px;font-size:10px}.map-panel{padding:29px 23px 0;display:flex;flex-direction:column;min-width:0;min-height:0}.map-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:21px}.map-heading h2{font-size:20px;font-weight:500;letter-spacing:-.65px;margin:10px 0 0;line-height:1.25}.segmented{display:flex;align-items:center;padding:3px;border-radius:7px;background:#eaede5;gap:2px}.segmented>button{background:transparent;border:0;border-radius:5px;font-size:10px;display:flex;align-items:center;justify-content:center;gap:5px;padding:7px 10px;color:#7a8672;white-space:nowrap}.segmented>button.active{background:#fff;box-shadow:0 1px 3px #26362610;color:#3c5637}.segmented>button:hover:not(.active){background:#ffffff6e}.view-switch{margin-top:10px}.map-wrap{flex:1;min-height:420px;position:relative;background:#e8ece2;border:1px solid #dce1d6;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.map{width:100%;height:100%;min-height:420px;position:relative;isolation:isolate;overflow:hidden;touch-action:none;background-color:#e8ede5;background-image:linear-gradient(#bfc8b433 1px,transparent 1px),linear-gradient(90deg,#bfc8b433 1px,transparent 1px);background-size:64px 64px;cursor:crosshair;outline-offset:-3px}.map[data-mode=pan]{cursor:grab}.map.interacting{cursor:grabbing}.tile-layer{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}.tile-layer img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none}.tile-layer .tile-failed{visibility:hidden!important}.point-layer{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;z-index:2}.point-layer .point-group{cursor:pointer}.point-hit{fill:transparent;pointer-events:all}.selection-ring{fill:none;stroke:#3d5c48;stroke-width:1.35;stroke-dasharray:3 3;pointer-events:none}.point-art{pointer-events:none}.map-search{position:absolute;top:18px;left:18px;right:72px;max-width:400px;z-index:5;cursor:default}.map-search form{display:flex;align-items:center;background:#fff;border:1px solid #e5e8df;box-shadow:0 3px 14px #26372710;border-radius:8px;padding:0 7px 0 12px;height:44px;gap:9px}.map-search form>.icon{width:16px;height:16px;color:#829478}.map-search input{border:0;outline:none;background:transparent;flex:1;padding:8px 0;font-size:11px;min-width:0}.map-search form>button{background:#f0f3ea;border:0;border-radius:5px;display:flex;align-items:center;justify-content:center;width:29px;height:29px;color:#6f8264}.map-search form>button>.icon{width:16px;height:16px}.map-location{position:absolute;right:18px;top:18px;background:#fff;box-shadow:0 3px 14px #26372710;width:43px;height:44px;border:1px solid #e5e8df;z-index:5;color:#64805e}.search-results{background:#fff;box-shadow:0 8px 22px #26372720;border:1px solid var(--line);border-radius:8px;padding:6px;margin-top:5px;max-height:245px;overflow:auto}.search-results button{border:0;background:#fff;text-align:left;display:block;width:100%;padding:11px 8px;font-size:11px;line-height:1.5;border-radius:4px}.search-results button:hover{background:#f0f3e9}.search-results p{padding:9px;line-height:1.6;font-size:11px;margin:0;color:#7c8872}.search-results .search-credit{font-size:9px;border-top:1px solid var(--line);padding-top:8px}.map-status{position:absolute;top:74px;left:18px;right:18px;padding:10px 12px;border:1px solid #d7dfca;background:#fafbefef;border-radius:6px;font-size:10px;line-height:1.6;z-index:4;color:#6b795d;cursor:default;max-width:420px}.map-status a{font-weight:600}.map-status button{font-size:10px;border:0;background:transparent;text-decoration:underline;margin-left:7px;padding:0;color:#476443}.map-right-controls{position:absolute;right:18px;top:50%;transform:translateY(-34%);display:flex;flex-direction:column;gap:10px;z-index:4}.map-control-group{border-radius:8px;overflow:hidden;border:1px solid #dce2d3;background:#fff;box-shadow:var(--shadow)}.map-control-group>button{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:0;background:#fff}.map-control-group>button+button{border-top:1px solid #e9ecdf}.map-control-group>button:hover{background:#eff3e7}.map-square{width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:1px solid #dce2d3;background:#fff;border-radius:8px;box-shadow:var(--shadow)}.map-square .icon{width:17px;height:17px}.map-square.active{background:var(--green);color:#fff;border-color:var(--green)}.map-bottom-tools{display:flex;align-items:center;justify-content:center;padding:4px 6px;border-radius:10px;background:#ffffffed;border:1px solid #e2e7d8;box-shadow:0 3px 15px #27372917;position:absolute;left:50%;transform:translateX(-50%);bottom:35px;z-index:4;cursor:default;white-space:nowrap}.mode-switch{background:transparent;padding:0}.mode-switch>button{padding:8px;font-size:10px;color:#8b987d;gap:5px}.mode-switch>button.active{background:#eaf0e2;box-shadow:none;color:#4a6540}.mode-switch .icon{width:15px;height:15px}.mode-switch kbd{font:8px var(--font);opacity:.5;padding-left:3px}.tool-divider{height:21px;width:1px;background:#e7ebdf;margin:0 6px}.map-bottom-tools>.icon-button{width:28px;height:28px}.map-bottom-tools>.icon-button .icon{width:16px;height:16px}.map-attribution{position:absolute;right:0;bottom:0;font-size:9px;padding:4px 6px;background:#ffffffdf;z-index:4;cursor:default;color:#536449}.map-attribution a{text-decoration:none}.map-attribution a:hover{text-decoration:underline}.empty-map-hint{position:absolute;left:50%;transform:translateX(-50%);bottom:102px;display:flex;align-items:center;gap:11px;background:#ffffffed;border:1px solid #e1e6d5;border-radius:8px;padding:13px 17px;box-shadow:var(--shadow);z-index:3;pointer-events:none;width:max-content;max-width:calc(100% - 58px)}.empty-map-hint .hint-symbol{font-size:26px;color:#93a583}.empty-map-hint strong{display:block;font-size:11px;font-weight:550}.empty-map-hint div>span{display:block;color:#95a188;font-size:10px;margin-top:5px}.north-mark{position:absolute;left:20px;bottom:21px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;font-weight:600;color:#697b60;z-index:3;background:#ffffffb8;border-radius:5px;padding:5px 8px;pointer-events:none}.north-mark span{font-size:20px;font-weight:400;line-height:1}.map.pattern-mode{background-color:#fdfdfa;background-image:radial-gradient(#b9c5ab66 .7px,transparent .7px);background-size:22px 22px}.pattern-mode .tile-layer,.pattern-mode .map-attribution,.pattern-mode .north-mark{display:none}.map-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:37px;font-size:9px;color:#919b87;padding:0 2px}.map-footer>span:first-child{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.footer-dot{margin:0 7px;color:#b5bdab}.export-panel{border-left:1px solid var(--line)}.preview-stage{height:244px;margin-top:26px;border-radius:10px;border:1px solid #e6e8df;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}.checker{background-color:#fff;background-image:linear-gradient(45deg,#efefe9 25%,transparent 25%),linear-gradient(-45deg,#efefe9 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#efefe9 75%),linear-gradient(-45deg,transparent 75%,#efefe9 75%);background-size:14px 14px;background-position:0 0,0 7px,7px -7px,-7px 0}.preview-stage.light{background:#fff}.preview-stage.dark{background:#24342e;border-color:#24342e}.preview-stage #preview-art{position:absolute;inset:20px;display:flex;align-items:center;justify-content:center}.preview-stage svg{display:block;max-width:100%;max-height:100%;overflow:visible}.preview-stage #preview-empty{text-align:center;color:#9eaa8e;position:relative;pointer-events:none}.preview-empty-symbol{font-size:32px;color:#b7c2ab}.preview-stage #preview-empty p{font-size:11px;line-height:1.7;margin:11px 0 0}.preview-controls{display:flex;align-items:center;gap:8px;font-size:9px;color:#9da591;margin:11px 0 22px}.preview-backgrounds{display:flex;gap:6px;align-items:center}.preview-backgrounds button{width:13px;height:13px;border-radius:50%;border:1px solid #d5dacb;padding:0;background-size:6px 6px;background-position:0 0,0 3px,3px -3px,-3px 0}.preview-backgrounds .light{background:#fff}.preview-backgrounds .dark{background:#24342e;border-color:#24342e}.preview-backgrounds .active{outline:1px solid #929f82;outline-offset:2px}.fit-label{margin-left:auto}.export-details{margin:0;padding:0}.export-details>div{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #edece5;font-size:10px}.export-details dt{color:#919c84}.export-details dd{margin:0;color:#5d7052;font-size:10px}.export-scale{display:flex;align-items:center;justify-content:center;gap:5px;margin:17px 0;color:#668456;font-size:9px}.export-scale .icon{width:13px;height:13px}.export-button{width:100%;padding:13px 13px;justify-content:flex-start;min-height:44px;margin-bottom:9px;font-size:12px;gap:10px}.export-button>.icon{width:16px;height:16px}.export-button>small{margin-left:auto;font-size:8px;font-weight:400;letter-spacing:1px;opacity:.6}.export-caption{font-size:9px;line-height:1.8;text-align:center;color:#9ba68d;margin:3px 0 0}.precision-card{background:#eff2e9;border-radius:9px;padding:18px 16px;margin-top:26px;position:relative;border:1px solid #e9eddf}.precision-icon{display:block;color:#758c64;margin-bottom:10px}.precision-icon .icon{width:17px;height:17px}.precision-card h3{font-size:12px;font-weight:550;margin:0 0 9px;color:#4b6442}.precision-card p{font-size:10px;line-height:1.8;color:#7f8e72;margin:0}.precision-card>div{font-size:9px;line-height:1.7;border-top:1px solid #dde5d3;padding-top:10px;margin-top:12px;color:#8d9b7e}.backup-link{display:flex;justify-content:center;width:100%;font-size:9px;margin-top:20px;color:#859676}.backup-link>.icon{width:14px;height:14px}.export-warning{font-size:10px;line-height:1.7;color:#997145;background:#fbf3e5;padding:11px;border-radius:7px;margin-top:12px}.app-footer{height:31px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 26px;color:#a0a98f;font-size:7px;letter-spacing:1px;background:var(--panel)}.app-footer>span:last-child{letter-spacing:.3px;font-size:8px}.toast-container{position:fixed;left:50%;transform:translateX(-50%);bottom:35px;z-index:200;pointer-events:none;max-width:min(90%,500px);width:max-content}.toast{background:#2d4437;color:#fff;border:1px solid #ffffff30;box-shadow:0 8px 30px #243a2b30;padding:13px 19px;border-radius:9px;font-size:12px;line-height:1.6;animation:toast-in .18s ease-out}.toast.error{background:#784b3e}.storage-notice{background:#fff2d8;color:#875f2d;padding:12px 25px;font-size:12px;line-height:1.6;position:relative;z-index:35}.mobile-nav{display:none}dialog{width:min(590px,calc(100% - 32px));max-height:calc(100dvh - 40px);padding:28px 32px;border:1px solid #e0e4d8;border-radius:16px;background:#fcfbf8;color:var(--ink);box-shadow:0 30px 100px #1f352830}dialog::backdrop{background:#27382e66;backdrop-filter:blur(3px)}.dialog-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}.dialog-heading>.icon-button{margin-top:-8px;margin-right:-10px}dialog h2{font-size:26px;font-weight:550;letter-spacing:-.6px;margin:16px 0 24px}dialog h3{font-size:13px;font-weight:600;margin:0 0 7px}dialog p{font-size:12px;line-height:1.8;color:#7c8972}.help-step{display:flex;gap:18px;margin:23px 0}.help-step>span{font-size:11px;color:#849774;line-height:1.8}.help-step p{margin:0}.help-notes{border-top:1px solid var(--line);padding:6px 0 12px;margin-top:23px}.help-notes p{font-size:10px;line-height:1.85}.help-notes strong{color:#516647}.confirm-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:25px}#confirm-dialog{max-width:450px}.noscript{position:fixed;inset:0;background:var(--paper);display:flex;align-items:center;justify-content:center;padding:30px;z-index:300}input[aria-invalid=true]{outline:2px solid #ad634f}.pulse{animation:highlight .5s ease-out}@keyframes toast-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes highlight{from{background:#e5ecd8}to{background:transparent}}
+@media(min-width:1600px){.workspace{grid-template-columns:304px minmax(420px,1fr) 320px}.sidebar{padding:34px 28px}.map-panel{padding:34px 28px 0}.preview-stage{height:264px}.map-heading h2{font-size:24px}.section-heading h1,.section-heading h2{font-size:23px}.shape-option{height:68px}.project-heading input{width:280px}.point-list{max-height:270px}}
+@media(max-width:1180px) and (min-width:901px){.workspace{grid-template-columns:237px minmax(320px,1fr) 247px}.sidebar{padding:26px 17px 18px}.map-panel{padding:26px 16px 0}.map-heading{align-items:flex-start}.map-heading h2{font-size:17px}.map-heading .eyebrow{font-size:8px;letter-spacing:1px}.segmented.view-switch>button{padding:6px 7px;font-size:9px}.brand{min-width:211px}.brand strong{font-size:22px}.topbar{padding:0 21px;gap:18px}.save-status{display:none}.preview-stage{height:208px}.section-heading h1,.section-heading h2{font-size:19px}.preview-controls{font-size:8px}.map-footer{font-size:8px}.empty-map-hint{max-width:calc(100% - 35px);padding:12px}.empty-map-hint strong{font-size:10px}.empty-map-hint div>span{font-size:9px}.mode-switch kbd{display:none}}
+@media(max-width:900px){.topbar{height:74px;padding:0 20px;gap:18px}.brand{min-width:0;flex:1}.brand strong{font-size:23px}.project-heading{flex:0 1 250px}.project-heading input{width:100%;font-size:12px}.save-status{display:none}.workspace{height:auto;min-height:0;grid-template-columns:1fr 1fr;align-items:stretch}.map-panel{grid-column:1/-1;grid-row:1;padding:25px 22px 0;height:620px}.map-wrap{min-height:380px}.map-heading h2{font-size:23px}.sidebar{overflow:visible;padding:28px 28px;border-top:1px solid var(--line)}.palette-panel{grid-column:1;border-right:1px solid var(--line);scroll-margin-top:15px}.export-panel{grid-column:2;border-left:0;scroll-margin-top:15px}.point-list{max-height:240px}.preview-stage{height:275px}.app-footer{font-size:6px;padding:0 20px;height:35px}.mobile-nav{display:flex;justify-content:center;gap:30px;padding:11px;border-bottom:1px solid var(--line);background:var(--panel);font-size:11px}.mobile-nav a{text-decoration:none;color:#75856b}.topbar .project-menu{right:53px}.section-heading h1,.section-heading h2{font-size:23px}.color-field,.size-field{margin-top:25px}.sidebar-note{margin-top:24px}.export-caption{font-size:10px}.export-details>div,.export-details dd{font-size:11px}.backup-link{font-size:11px}.preview-controls{font-size:10px}.export-scale{font-size:11px}.precision-card p{font-size:11px}.precision-card>div{font-size:10px}.precision-card h3{font-size:14px}.points-heading h2{font-size:14px}.shape-option{height:65px}.shape-option svg{width:22px;height:22px}.shape-option span{font-size:10px}}
+@media(max-width:550px){.topbar{height:70px;padding:0 17px;gap:8px}.brand{gap:9px}.brand strong{font-size:21px}.brand small{font-size:6px;letter-spacing:1.4px}.brand-mark{transform:scale(.87);width:33px}.project-heading{position:absolute;top:106px;left:20px;right:20px;max-width:calc(100% - 40px);z-index:5}.project-heading input{font-size:11px;width:100%;text-align:center;color:#88967c;border:0;height:30px;padding:2px}.top-actions{gap:0}.top-actions .button{padding:7px;font-size:11px}.top-actions .button .icon{display:none}.top-actions .button .chevron{padding-left:0}.top-actions>.icon-button{width:29px}.top-actions>.icon-button .icon{width:18px;height:18px}.topbar .project-menu{right:15px;top:60px;width:264px}.mobile-nav{padding:12px;font-size:11px;gap:45px}.workspace{display:flex;flex-direction:column}.map-panel{padding:47px 15px 0;height:calc(69dvh + 95px);min-height:540px;max-height:700px;scroll-margin-top:10px}.map-heading{margin-bottom:17px;gap:8px}.map-heading .eyebrow{font-size:8px;letter-spacing:1px}.map-heading h2{font-size:18px;letter-spacing:-.55px;max-width:235px}.view-switch>button{font-size:10px;padding:7px 9px}.map-wrap{min-height:380px}.map{min-height:380px}.map-search{top:13px;left:12px;right:62px}.map-search form{padding-left:10px;gap:7px;height:41px}.map-search input{font-size:11px}.map-location{right:12px;top:13px;height:41px;width:40px}.map-right-controls{right:12px;top:44%}.map-control-group>button{width:35px;height:37px}.map-square{width:37px;height:37px}.map-bottom-tools{bottom:38px}.empty-map-hint{bottom:98px;padding:12px;width:calc(100% - 25px);max-width:calc(100% - 25px);gap:8px}.empty-map-hint strong{font-size:10px}.empty-map-hint div>span{font-size:9px}.empty-map-hint .hint-symbol{font-size:23px}.mode-switch kbd{display:none}.map-status{top:63px;left:12px;right:12px;font-size:10px}.north-mark{left:13px;bottom:20px}.map-attribution{font-size:8px}.map-footer{font-size:8px;gap:5px;min-height:33px}.footer-dot{margin:0 4px}.sidebar{padding:29px 25px}.palette-panel{border-right:0}.export-panel{border-left:0}.section-heading h1,.section-heading h2{font-size:24px}.section-heading p{font-size:12px}.editing-context{font-size:12px;margin-top:24px}.editing-context>span{max-width:220px}.editing-context .text-button{font-size:11px!important}.shape-options{gap:9px}.shape-option{height:67px;font-size:11px}.shape-option svg{width:22px;height:22px}.swatch{width:26px;height:26px}.swatches{margin-bottom:16px}.color-field legend,legend{font-size:12px}.color-field legend>span{font-size:11px}.color-entry{height:44px}.color-entry>input{font-size:13px}.size-field>label{font-size:12px}.size-field output{font-size:11px}.size-field input{margin:17px 0;height:4px}.size-field input::-webkit-slider-thumb{height:18px;width:18px}.range-labels{font-size:10px}.coordinate-details summary{font-size:12px}.coordinate-details summary>.icon{width:17px;height:17px}.coordinate-inputs label{font-size:11px}.coordinate-inputs input{font-size:16px;padding:10px}.button.small{font-size:12px;min-height:39px}.coordinate-details{padding:18px 0}.points-heading>button{font-size:12px}.point-row{min-height:53px}.point-row strong{font-size:12px}.point-row small{font-size:10px}.point-list{max-height:270px}.empty-list p{font-size:12px}.empty-list button{font-size:12px}.sidebar-note{font-size:10px}.selected-editor>label{font-size:12px}.selected-editor>label>span{font-size:10px}.selected-editor>input{font-size:16px}.selected-editor .micro{font-size:11px}.selected-editor .danger{font-size:12px}.preview-stage{height:300px;margin-top:24px}.export-button{min-height:48px;font-size:14px}.export-button>small{font-size:9px}.export-button>.icon{width:18px;height:18px}.export-details>div{padding:11px 0;font-size:12px}.export-details dd{font-size:12px}.export-scale{margin:19px 0;font-size:11px}.export-caption{font-size:11px}.precision-card{padding:21px}.precision-card p{font-size:12px}.precision-card>div{font-size:11px}.preview-controls{font-size:11px}.preview-backgrounds{gap:9px}.preview-backgrounds button{width:17px;height:17px}.backup-link{font-size:12px}.app-footer{height:auto;min-height:42px;justify-content:center;font-size:7px;padding:12px}.app-footer>span:last-child{display:none}dialog{padding:24px;max-height:calc(100dvh - 28px)}dialog h2{font-size:23px}.toast-container{bottom:18px}.map-search input{font-size:16px}.map-search input::placeholder{font-size:11px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* Keep the map first when the narrow layout switches from grid to a column. */
+@media(max-width:550px){.map-panel{order:0}.palette-panel{order:1}.export-panel{order:2}}
+
+</style>
+</head>
+<body>
+  <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 15v5h16v-5"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 16v4h16v-4"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="m9 5-5 5 5 5M4 10h10a6 6 0 0 1 0 12"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 5 5 5-5 5m5-5H10a6 6 0 0 0 0 12"/></symbol>
+    <symbol id="i-fit" viewBox="0 0 24 24"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4m-4 5v2"/></symbol>
+    <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 7.5-2m-3.5 11v2"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path d="M7 12V6a2 2 0 0 1 4 0v6-8a2 2 0 0 1 4 0v8-6a2 2 0 0 1 4 0v10a6 6 0 0 1-6 6h-1c-3 0-4-2-6-4l-3-4a2 2 0 0 1 3-3l3 3"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V4h7l2 3h9v13H3V7Z"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .6-1.5 1-1.5 3m0 3v.1"/></symbol>
+  </defs></svg>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Map-to-Constellation home">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <span><strong>constellation</strong><small>FROM PLACES TO PATTERNS</small></span>
+    </a>
+    <div class="project-heading"><label class="sr-only" for="project-name">Project name</label><input id="project-name" maxlength="80" value="Untitled constellation" spellcheck="false"><span id="save-status" class="save-status"><span></span>Saved on this device</span></div>
+    <div class="top-actions"><button class="button subtle" id="project-button" aria-haspopup="menu" aria-expanded="false"><svg class="icon"><use href="#i-folder"/></svg><span>Project</span><span class="chevron">⌄</span></button><button class="icon-button" id="help-button" title="How it works" aria-label="How it works"><svg class="icon"><use href="#i-help"/></svg></button></div>
+    <div id="project-menu" class="project-menu" role="menu" hidden>
+      <button role="menuitem" id="save-project"><svg class="icon"><use href="#i-download"/></svg>Save project backup <small>JSON</small></button>
+      <button role="menuitem" id="load-project"><svg class="icon"><use href="#i-upload"/></svg>Open project…</button>
+      <button role="menuitem" id="demo-project"><svg class="icon"><use href="#i-pin"/></svg>Load example pattern</button>
+      <hr><button role="menuitem" id="new-project"><svg class="icon"><use href="#i-plus"/></svg>New constellation</button>
+    </div>
+    <input id="file-input" type="file" accept=".json,application/json" hidden>
+  </header>
+  <div id="storage-notice" class="storage-notice" role="alert" hidden></div>
+  <nav class="mobile-nav" aria-label="Workspace sections"><a href="#map-panel">Map</a><a href="#palette-panel">Points</a><a href="#export-panel">Export</a></nav>
+  <main class="workspace">
+    <aside id="palette-panel" class="sidebar palette-panel" aria-label="Point tools">
+      <div class="section-heading"><span class="eyebrow">01 / MAKE YOUR MARK</span><h1>Your point palette</h1><p>Little marks. Meaningful places.</p></div>
+      <div class="editing-context"><span id="editing-caption">Style for new points</span><button id="deselect" class="text-button" hidden>Done editing</button></div>
+      <fieldset class="shape-field"><legend>Shape</legend><div id="shape-options" class="shape-options" role="group" aria-label="Icon shape"></div></fieldset>
+      <fieldset class="color-field"><legend>Color <span>Any shade you like</span></legend><div id="swatches" class="swatches"></div><div class="color-entry"><label class="color-picker-label" title="Choose any color"><input type="color" id="color-picker" value="#C2714F" aria-label="Choose any icon color"></label><label class="sr-only" for="hex-color">Hex color</label><input id="hex-color" value="#C2714F" spellcheck="false" maxlength="7" pattern="#[0-9a-fA-F]{6}" aria-label="Hex color"><span>HEX</span></div></fieldset>
+      <div class="size-field"><label for="icon-size">Size <output id="size-output">20 px</output></label><input id="icon-size" type="range" min="6" max="80" value="20" step="1"><div class="range-labels"><span>Small</span><span>Large</span></div></div>
+      <section id="selected-editor" class="selected-editor" hidden aria-label="Selected point details"><label for="point-name">Point name <span>Not exported</span></label><input id="point-name" type="text" maxlength="80"><div class="coordinate-inputs"><label>Latitude<input id="edit-lat" type="number" step="any" min="-85.0511287798066" max="85.0511287798066"></label><label>Longitude<input id="edit-lng" type="number" step="any" min="-180" max="180"></label></div><button class="button small full" id="apply-coordinates">Apply coordinates</button><p class="micro">Points do not drag accidentally. Change their location here.</p><button id="delete-point" class="text-button danger"><svg class="icon"><use href="#i-trash"/></svg>Delete this point</button></section>
+      <details class="coordinate-details" id="coordinate-details"><summary><svg class="icon"><use href="#i-target"/></svg>Add an exact location<span>+</span></summary><form id="coordinate-form"><div class="coordinate-inputs"><label>Latitude<input id="add-lat" type="number" step="any" min="-85.0511287798066" max="85.0511287798066" required placeholder="38.8977"></label><label>Longitude<input id="add-lng" type="number" step="any" min="-180" max="180" required placeholder="-77.0365"></label></div><button class="button small full" type="submit">Add point at coordinates</button></form></details>
+      <section class="points-section"><div class="points-heading"><h2>Your points <span id="point-count">0</span></h2><button class="text-button" id="clear-points" disabled>Clear</button></div><div id="point-list" class="point-list" aria-label="Your points"></div><div id="empty-list" class="empty-list"><p>Your next favorite pattern starts<br>with a single point.</p><button id="try-example" class="text-button">Try an example <span>↗</span></button></div></section>
+      <div class="sidebar-note"><span class="tiny-dot"></span>For you, on this device. No account needed.</div>
+    </aside>
+    <section class="map-panel" id="map-panel" aria-label="Map workspace">
+      <div class="map-heading"><div><span class="eyebrow">02 / FIND YOUR PLACES</span><h2>A different kind of star map.</h2></div><div class="segmented view-switch" role="group" aria-label="Map visibility"><button id="view-map" class="active" aria-pressed="true">Map</button><button id="view-pattern" aria-pressed="false">Pattern</button></div></div>
+      <div class="map-wrap">
+        <div id="map" class="map" tabindex="0" role="region" aria-label="Interactive map. Drag to pan, scroll to zoom. In Plot mode, click to add a point, or press Enter to add at the center." data-mode="plot">
+          <div class="tile-layer" aria-hidden="true"></div>
+          <svg class="point-layer" xmlns="http://www.w3.org/2000/svg" aria-label="Plotted points"></svg>
+          <div class="map-search" data-map-control>
+            <form id="search-form"><svg class="icon"><use href="#i-search"/></svg><label class="sr-only" for="search-input">Search for a place or coordinates</label><input id="search-input" placeholder="Find a place or lat, lng" autocomplete="off" maxlength="180"><button id="search-submit" type="submit" aria-label="Search"><svg class="icon"><use href="#i-arrow"/></svg></button></form>
+            <div id="search-results" class="search-results" hidden></div>
+          </div>
+          <button class="map-location icon-button" data-map-control id="locate-button" title="Use my location" aria-label="Use my location"><svg class="icon"><use href="#i-target"/></svg></button>
+          <div class="map-status" id="map-status" role="status" hidden data-map-control></div>
+          <div class="map-right-controls" data-map-control><div class="map-control-group"><button id="zoom-in" aria-label="Zoom in" title="Zoom in (+)"><svg class="icon"><use href="#i-plus"/></svg></button><button id="zoom-out" aria-label="Zoom out" title="Zoom out (−)"><svg class="icon"><use href="#i-minus"/></svg></button></div><button id="fit-points" class="map-square" aria-label="Fit all points on the map" title="Fit all points (changes map scale)" disabled><svg class="icon"><use href="#i-fit"/></svg></button><button id="lock-zoom" class="map-square" aria-label="Lock map zoom" title="Lock map zoom to hold spacing" aria-pressed="false"><svg class="icon"><use href="#i-unlock"/></svg></button></div>
+          <div class="empty-map-hint" id="empty-map-hint"><span class="hint-symbol">✳</span><div><strong>Every constellation starts somewhere.</strong><span>Click the map to place your first point.</span></div></div>
+          <div class="map-bottom-tools" data-map-control><div class="segmented mode-switch" role="group" aria-label="Map interaction mode"><button id="mode-plot" class="active" aria-pressed="true"><svg class="icon"><use href="#i-plus"/></svg>Plot <kbd>P</kbd></button><button id="mode-pan" aria-pressed="false"><svg class="icon"><use href="#i-hand"/></svg>Navigate <kbd>V</kbd></button></div><span class="tool-divider"></span><button id="undo" class="icon-button" aria-label="Undo" title="Undo (Ctrl/⌘ Z)" disabled><svg class="icon"><use href="#i-undo"/></svg></button><button id="redo" class="icon-button" aria-label="Redo" title="Redo (Ctrl/⌘ Shift Z)" disabled><svg class="icon"><use href="#i-redo"/></svg></button></div>
+          <div class="map-attribution" data-map-control>© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a></div>
+          <div class="north-mark" aria-hidden="true">N<span>↑</span></div>
+        </div>
+      </div>
+      <div class="map-footer"><span id="cursor-coordinates">38.89770, −77.03650</span><span id="zoom-label">Zoom 13 <span class="footer-dot">·</span> Scale unlocked</span></div>
+    </section>
+    <aside class="sidebar export-panel" id="export-panel" aria-label="Export your constellation">
+      <div class="section-heading"><span class="eyebrow">03 / KEEP THE PATTERN</span><h2>Your constellation</h2><p>The places. Not the map.</p></div>
+      <div class="preview-stage checker" id="preview-stage"><div id="preview-art"></div><div id="preview-empty"><span class="preview-empty-symbol" aria-hidden="true">✦</span><p>Your pattern will<br>take shape here.</p></div></div>
+      <div class="preview-controls"><span>Preview only</span><div class="preview-backgrounds" role="group" aria-label="Preview background, not exported"><button class="checker active" data-preview="checker" aria-label="Preview on transparency checkerboard" aria-pressed="true"></button><button class="light" data-preview="light" aria-label="Preview on white" aria-pressed="false"></button><button class="dark" data-preview="dark" aria-label="Preview on dark" aria-pressed="false"></button></div><span class="fit-label">Fit view</span></div>
+      <dl class="export-details"><div><dt>Points</dt><dd id="export-count">—</dd></div><div><dt>Output size</dt><dd id="export-dimensions">—</dd></div><div><dt>Canvas</dt><dd>Transparent</dd></div></dl>
+      <div class="export-scale"><svg class="icon"><use href="#i-check"/></svg>1 map pixel = 1 export pixel</div>
+      <button id="export-png" class="button primary export-button" disabled><svg class="icon"><use href="#i-download"/></svg><span>Export PNG</span><small>IMAGE</small></button>
+      <button id="export-svg" class="button export-button" disabled><svg class="icon"><use href="#i-download"/></svg><span>Export SVG</span><small>VECTOR</small></button>
+      <p class="export-caption">Just your icons. No map, labels, or coordinates.<br>Tight crop with a 1 px safety edge.</p>
+      <div id="export-warning" class="export-warning" role="status" hidden></div>
+      <div class="precision-card"><span class="precision-icon"><svg class="icon"><use href="#i-lock"/></svg></span><h3>Spacing stays put.</h3><p>Export only trims the surrounding canvas. Your point positions, sizes, and spacing stay exactly as plotted.</p><div>Lock the map zoom to keep your current scale.</div></div>
+      <button id="save-backup-secondary" class="backup-link text-button"><svg class="icon"><use href="#i-folder"/></svg>Save an editable project backup</button>
+    </aside>
+  </main>
+  <footer class="app-footer"><span>MAP-TO-CONSTELLATION <span class="footer-dot">/</span> A LITTLE GEOGRAPHY. A LITTLE YOU.</span><span>Local-first <span class="footer-dot">·</span> PNG + SVG</span></footer>
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <dialog id="help-dialog"><div class="dialog-heading"><span class="eyebrow">A FIELD GUIDE</span><button class="icon-button" data-close-dialog aria-label="Close help"><svg class="icon"><use href="#i-close"/></svg></button></div><h2>Real places. Your pattern.</h2><div class="help-step"><span>01</span><div><h3>Find somewhere that matters.</h3><p>Search for a place or enter latitude, longitude. Drag to pan; use the wheel, a pinch, or + / − to zoom.</p></div></div><div class="help-step"><span>02</span><div><h3>Make your marks.</h3><p>Choose a shape, any color, and size. In Plot mode, click or tap the map. Select an existing point to style it individually. Choose Done editing to set the style for new points. Use exact coordinate entry for precise locations.</p></div></div><div class="help-step"><span>03</span><div><h3>Keep the pattern, leave the map.</h3><p>PNG and SVG contain all your icons, including points outside the viewport. Export uses the current map zoom, translates the whole pattern together, and crops around the full icon outlines. Nothing is fit, stretched, or independently repositioned.</p></div></div><div class="help-notes"><p><strong>Scale:</strong> The preview fits the card; the actual files preserve the map's pixel spacing. Zooming deliberately changes map scale. Use the lock button to prevent zoom changes. PNG is 1×; SVG has matching intrinsic dimensions.</p><p><strong>Saving:</strong> This browser saves your project locally. Export a JSON backup before clearing browser data or switching devices. Opening a backup restores geographic coordinates, styling, world copies, and zoom.</p><p><strong>Privacy & connectivity:</strong> No account or application server. Your points stay in this browser unless you save a file. Viewing a map sends tile-area requests to OpenStreetMap. Place search sends your submitted query to Nominatim. Live maps and place search require internet and a localhost or HTTPS page.</p><p><strong>Limits:</strong> 2,000 points. PNG: 8,192 px per side and 16 megapixels; larger patterns remain available as SVG. Map coverage ends at ±85.0511° latitude. Screen-space Web Mercator spacing is preserved, not ground-distance ratios.</p><p><strong>Keys:</strong> P: plot · V: navigate · Esc: deselect · Delete: remove selected · Ctrl/⌘ Z: undo · Ctrl/⌘ Shift Z: redo. With the map focused, arrow keys pan and Enter plots at the center.</p></div><button class="button primary full" data-close-dialog>Let's make something</button></dialog>
+  <dialog id="confirm-dialog"><div class="dialog-heading"><span class="eyebrow">YOUR PROJECT</span></div><h2 id="confirm-title">Start fresh?</h2><p id="confirm-message"></p><div class="confirm-actions"><button class="button" id="confirm-cancel">Cancel</button><button class="button primary" id="confirm-ok">Continue</button></div></dialog>
+  <noscript><div class="noscript">This app needs JavaScript enabled to plot and export points.</div></noscript>
+  <script>
+/* Map-to-Constellation — projection, geometry, validation, and export.
+ * No DOM or third-party dependencies. Shared unchanged by map and exporter.
+ */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.ConstellationCore = factory();
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+  const MAX_LAT = 85.0511287798066;
+  const SHAPES = ['circle', 'square', 'triangle', 'diamond', 'star', 'hexagon'];
+  const LIMIT = 2000;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const mod = (v, n) => ((v % n) + n) % n;
+  const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function finite(v, field) { if (typeof v !== 'number' || !Number.isFinite(v)) throw new Error(`${field} must be a finite number.`); return v; }
+  function ranged(v, a, b, field) { finite(v, field); if (v < a || v > b) throw new Error(`${field} must be between ${a} and ${b}.`); return v; }
+  function normalizeLongitude(lng) { return mod(lng + 180, 360) - 180; }
+  function worldSize(zoom) { return 256 * 2 ** zoom; }
+  /** Unwrapped x is intentional: never relocate individual points at the dateline. */
+  function project(lat, lng, zoom, world = 0) {
+    finite(lat, 'Latitude'); finite(lng, 'Longitude'); finite(zoom, 'Zoom');
+    const s = worldSize(zoom), phi = clamp(lat, -MAX_LAT, MAX_LAT) * Math.PI / 180;
+    return {x: (lng + 360 * world + 180) / 360 * s,
+      y: (1 - Math.asinh(Math.tan(phi)) / Math.PI) / 2 * s};
+  }
+  function unproject(x, y, zoom) {
+    const s = worldSize(zoom);
+    return {lat: Math.atan(Math.sinh(Math.PI * (1 - 2 * y / s))) * 180 / Math.PI, lng: x / s * 360 - 180};
+  }
+  /** Keep canonical longitude + a separately persisted world-copy index. */
+  function coordinateAt(lat, unwrappedLng) {
+    ranged(lat, -MAX_LAT, MAX_LAT, 'Latitude'); finite(unwrappedLng, 'Longitude');
+    const lng = normalizeLongitude(unwrappedLng);
+    const world = Math.round((unwrappedLng - lng) / 360);
+    if (Math.abs(world) > 1024) throw new Error('This world copy is outside the supported map range.');
+    return {lat, lng, world};
+  }
+  function nearestCoordinate(lat, lng, referenceLng) {
+    ranged(lng, -180, 180, 'Longitude');
+    return coordinateAt(lat, lng + 360 * Math.round((referenceLng - lng) / 360));
+  }
+  function geometry(shape, size) {
+    if (!SHAPES.includes(shape)) throw new Error('Unknown shape.');
+    finite(size, 'Size'); if (size <= 0) throw new Error('Size must be positive.');
+    const r = size / 2;
+    if (shape === 'circle') return {type:'circle', r, minX:-r, minY:-r, maxX:r, maxY:r};
+    let vertices;
+    if (shape === 'square') vertices = [[-r,-r],[r,-r],[r,r],[-r,r]];
+    if (shape === 'triangle') { const h = size * Math.sqrt(3) / 2; vertices = [[0,-h * 2/3],[r,h/3],[-r,h/3]]; }
+    if (shape === 'diamond') vertices = [[0,-r],[r,0],[0,r],[-r,0]];
+    if (shape === 'star' || shape === 'hexagon') {
+      const n = shape === 'star' ? 10 : 6;
+      vertices = Array.from({length:n}, (_, i) => { const a = -Math.PI/2 + i * Math.PI*2/n, rad = shape==='star' && i%2 ? r*.44 : r; return [Math.cos(a)*rad, Math.sin(a)*rad]; });
+    }
+    return {type:'polygon', vertices, minX:Math.min(...vertices.map(p=>p[0])), maxX:Math.max(...vertices.map(p=>p[0])), minY:Math.min(...vertices.map(p=>p[1])), maxY:Math.max(...vertices.map(p=>p[1]))};
+  }
+  // 9 decimal places retains subpixel layout precision without enormous XML strings.
+  const number = n => Number(n.toFixed(9)).toString();
+  function shapeMarkup(point) {
+    if (!/^#[0-9a-f]{6}$/i.test(point.color)) throw new Error('Invalid point color.');
+    const g = geometry(point.shape, point.size);
+    if (g.type === 'circle') return `<circle cx="0" cy="0" r="${number(g.r)}" fill="${point.color}"/>`;
+    return `<polygon points="${g.vertices.map(p=>p.map(number).join(',')).join(' ')}" fill="${point.color}"/>`;
+  }
+  function projectPoints(points, zoom) { return points.map(p => ({...p, ...project(p.lat, p.lng, zoom, p.world || 0)})); }
+  /** A translation ONLY. No per-point rounding, fitting, recentering, or rescaling. */
+  function cropScene(projected, padding = 1) {
+    if (!projected.length) return null;
+    ranged(padding, 0, 100, 'Padding');
+    let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+    for (const p of projected) {
+      finite(p.x,'Point x'); finite(p.y,'Point y');
+      const g = geometry(p.shape,p.size);
+      minX=Math.min(minX,p.x+g.minX); minY=Math.min(minY,p.y+g.minY);
+      maxX=Math.max(maxX,p.x+g.maxX); maxY=Math.max(maxY,p.y+g.maxY);
+    }
+    const left = Math.floor(minX)-padding, top = Math.floor(minY)-padding;
+    const right = Math.ceil(maxX)+padding, bottom = Math.ceil(maxY)+padding;
+    return {left,top,width:right-left,height:bottom-top,
+      points:projected.map(p=>({...p,x:p.x-left,y:p.y-top})),
+      originalBounds:{minX,minY,maxX,maxY}};
+  }
+  function buildScene(points, zoom) { return cropScene(projectPoints(points, zoom)); }
+  function toSVG(scene) {
+    if (!scene || !scene.points.length) throw new Error('Add at least one point before exporting.');
+    // Intentionally omit original coordinates, names, map tiles, labels, and metadata.
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${scene.width}" height="${scene.height}" viewBox="0 0 ${scene.width} ${scene.height}" preserveAspectRatio="xMidYMid meet">\n${scene.points.map(p=>`  <g transform="translate(${number(p.x)} ${number(p.y)})">${shapeMarkup(p)}</g>`).join('\n')}\n</svg>`;
+  }
+  function pngAllowed(scene) { return !!scene && scene.width <= 8192 && scene.height <= 8192 && scene.width * scene.height <= 16777216; }
+  function validateStyle(s) {
+    if (!s || typeof s !== 'object' || !SHAPES.includes(s.shape)) throw new Error('Unsupported icon shape.');
+    if (typeof s.color !== 'string' || !/^#[0-9a-f]{6}$/i.test(s.color)) throw new Error('Color must be a six-digit hex color.');
+    return {shape:s.shape,color:s.color.toUpperCase(),size:ranged(s.size,6,80,'Icon size')};
+  }
+  function validateProject(data) {
+    if (!data || data.app !== 'map-to-constellation' || data.version !== 1) throw new Error('This is not a supported Map-to-Constellation project.');
+    if (typeof data.name !== 'string' || data.name.length > 80) throw new Error('Project name must be 80 characters or fewer.');
+    if (!Array.isArray(data.points) || data.points.length > LIMIT) throw new Error(`Projects support up to ${LIMIT} points.`);
+    const ids = new Set();
+    const points = data.points.map((p,i)=> {
+      if (!p || typeof p !== 'object') throw new Error(`Point ${i+1} is invalid.`);
+      if (typeof p.id !== 'string' || !/^[a-zA-Z0-9_-]{1,80}$/.test(p.id) || ids.has(p.id)) throw new Error(`Point ${i+1} needs a unique valid ID.`);
+      ids.add(p.id);
+      if (typeof p.name !== 'string' || p.name.length>80) throw new Error(`Point ${i+1} name is too long.`);
+      const world=p.world===undefined?0:p.world;
+      if (!Number.isInteger(world) || Math.abs(world)>1024) throw new Error('Invalid world-copy index.');
+      return {id:p.id,name:p.name,lat:ranged(p.lat,-MAX_LAT,MAX_LAT,'Latitude'),lng:ranged(p.lng,-180,180,'Longitude'),world,...validateStyle(p)};
+    });
+    if (!data.view || !data.view.center) throw new Error('Project map view is missing.');
+    const view={center:{lat:ranged(data.view.center.lat,-MAX_LAT,MAX_LAT,'Map latitude'),lng:ranged(data.view.center.lng,-368820,368820,'Map longitude')},zoom:ranged(data.view.zoom,2,19,'Zoom'),locked:data.view.locked===true};
+    return {app:'map-to-constellation',version:1,name:data.name||'Untitled constellation',points,view,defaults:validateStyle(data.defaults)};
+  }
+  function emptyProject() { return {app:'map-to-constellation',version:1,name:'Untitled constellation',points:[],view:{center:{lat:38.8977,lng:-77.0365},zoom:13,locked:false},defaults:{shape:'circle',color:'#C2714F',size:20}}; }
+  return {MAX_LAT,SHAPES,LIMIT,clamp,mod,escape,worldSize,normalizeLongitude,project,unproject,coordinateAt,nearestCoordinate,geometry,number,shapeMarkup,projectPoints,cropScene,buildScene,toSVG,pngAllowed,validateProject,emptyProject};
+});
+
+</script>
+  <script>
+/* Small, dependency-free Web Mercator map. One unwrapped coordinate frame. */
+(function () {
+  'use strict';
+  const C=window.ConstellationCore;
+  class ConstellationMap {
+    constructor(el,options) {
+      this.el=el; this.options=options; this.zoom=options.view.zoom; this.center={...options.view.center}; this.locked=options.view.locked;
+      this.mode='plot';this.pointers=new Map();this.tiles=new Map();this.gesture=null;this.frame=0;this.lastWheel=0;this.tileTimer=0;
+      this.tileRoot=el.querySelector('.tile-layer');this.svg=el.querySelector('.point-layer');this.tileFailures=0;this.tileSuccess=0;
+      this.networkAllowed=/^https?:$/.test(location.protocol);this.width=el.clientWidth;this.height=el.clientHeight;
+      this.observer=new ResizeObserver(()=>{this.width=el.clientWidth;this.height=el.clientHeight;this.scheduleRender();});this.observer.observe(el);
+      el.addEventListener('pointerdown',e=>this.pointerDown(e));el.addEventListener('pointermove',e=>this.pointerMove(e));
+      el.addEventListener('pointerup',e=>this.pointerEnd(e));el.addEventListener('pointercancel',e=>this.pointerEnd(e,true));
+      el.addEventListener('wheel',e=>this.wheel(e),{passive:false});
+      el.addEventListener('keydown',e=>this.keydown(e));
+      this.render();
+      if(!this.networkAllowed)options.onTileStatus('local');
+    }
+    location(e){const r=this.el.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+    getView(){return{center:{...this.center},zoom:this.zoom,locked:this.locked};}
+    centerPixel(){return C.project(this.center.lat,this.center.lng,this.zoom);}
+    screenToCoord(x,y){const p=this.centerPixel();return C.unproject(p.x+x-this.width/2,p.y+y-this.height/2,this.zoom);}
+    toScreen(p){const c=this.centerPixel(),v=C.project(p.lat,p.lng,this.zoom,p.world||0);return{x:v.x-c.x+this.width/2,y:v.y-c.y+this.height/2};}
+    setMode(mode){this.mode=mode;this.el.dataset.mode=mode;}
+    setView(center,zoom=this.zoom,force=false){this.center={lat:C.clamp(center.lat,-C.MAX_LAT,C.MAX_LAT),lng:C.clamp(center.lng,-368820,368820)};if(!this.locked||force)this.zoom=C.clamp(zoom,2,19);this.scheduleRender();this.options.onViewChange(this.getView());}
+    setLocked(locked){this.locked=locked;this.options.onViewChange(this.getView());}
+    zoomBy(delta,anchor={x:this.width/2,y:this.height/2}){if(this.locked)return;this.zoomAt(C.clamp(this.zoom+delta,2,19),anchor);this.options.onViewChange(this.getView());}
+    zoomAt(next,anchor){const ll=this.screenToCoord(anchor.x,anchor.y);this.zoom=next;const p=C.project(ll.lat,ll.lng,next);this.center=C.unproject(p.x-anchor.x+this.width/2,p.y-anchor.y+this.height/2,next);this.center.lat=C.clamp(this.center.lat,-C.MAX_LAT,C.MAX_LAT);this.scheduleRender();}
+    fit(points){
+      if(!points.length)return;
+      const projected=C.projectPoints(points,0);let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+      for(const p of projected){minX=Math.min(minX,p.x);minY=Math.min(minY,p.y);maxX=Math.max(maxX,p.x);maxY=Math.max(maxY,p.y);}
+      const pad=110, dx=maxX-minX,dy=maxY-minY;
+      const z=dx+dy<1e-12?16:Math.floor(Math.log2(Math.min(Math.max(40,this.width-pad)/Math.max(dx,1e-12),Math.max(40,this.height-pad)/Math.max(dy,1e-12))));
+      this.setView(C.unproject((minX+maxX)/2,(minY+maxY)/2,0),C.clamp(z,2,19));
+    }
+    pointerDown(e){
+      if(e.button!==0 || e.target.closest('[data-map-control]'))return;
+      const p=this.location(e);this.pointers.set(e.pointerId,p);this.el.setPointerCapture(e.pointerId);
+      if(this.pointers.size===1){this.gesture={start:p,center:this.centerPixel(),moved:false,point:e.target.closest('[data-point-id]')?.dataset.pointId||null};}
+      else if(this.pointers.size===2){const [a,b]=[...this.pointers.values()];this.gesture={pinch:true,moved:true,distance:Math.max(1,Math.hypot(a.x-b.x,a.y-b.y)),zoom:this.zoom,anchor:this.screenToCoord((a.x+b.x)/2,(a.y+b.y)/2),startCenter:this.centerPixel(),startMid:{x:(a.x+b.x)/2,y:(a.y+b.y)/2}};}
+      this.el.classList.add('interacting');
+    }
+    pointerMove(e){
+      const p=this.location(e);this.options.onPointer(this.screenToCoord(p.x,p.y));
+      if(!this.pointers.has(e.pointerId)||!this.gesture)return;
+      this.pointers.set(e.pointerId,p);
+      if(this.pointers.size===2&&this.gesture.pinch){
+        const [a,b]=[...this.pointers.values()],g=this.gesture,mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+        if(!this.locked)this.zoom=C.clamp(g.zoom+Math.log2(Math.hypot(a.x-b.x,a.y-b.y)/g.distance),2,19);
+        const world=C.project(g.anchor.lat,g.anchor.lng,this.zoom);
+        this.center=C.unproject(world.x-mid.x+this.width/2,world.y-mid.y+this.height/2,this.zoom);
+      }else if(this.pointers.size===1&&!this.gesture.pinch){
+        const g=this.gesture,dx=p.x-g.start.x,dy=p.y-g.start.y;
+        if(Math.hypot(dx,dy)>4)g.moved=true;
+        if(g.moved)this.center=C.unproject(g.center.x-dx,g.center.y-dy,this.zoom);
+      }
+      this.center.lat=C.clamp(this.center.lat,-C.MAX_LAT,C.MAX_LAT);this.center.lng=C.clamp(this.center.lng,-368820,368820);this.scheduleRender();
+    }
+    pointerEnd(e,cancel=false){
+      if(!this.pointers.has(e.pointerId))return;
+      const p=this.location(e),g=this.gesture;this.pointers.delete(e.pointerId);
+      if(this.el.hasPointerCapture(e.pointerId))this.el.releasePointerCapture(e.pointerId);
+      if(!cancel&&g&&!g.moved&&!g.pinch){if(g.point)this.options.onSelect(g.point);else if(this.mode==='plot')this.options.onAdd(this.screenToCoord(p.x,p.y));else this.options.onSelect(null);}
+      if(this.pointers.size===1){const remaining=[...this.pointers.values()][0];this.gesture={start:remaining,center:this.centerPixel(),moved:true};}
+      else if(!this.pointers.size){this.gesture=null;this.el.classList.remove('interacting');this.options.onViewChange(this.getView());this.scheduleRender();}
+    }
+    wheel(e){if(e.target.closest('[data-map-control]'))return;e.preventDefault();if(this.locked)return;const now=performance.now();if(now-this.lastWheel<150)return;this.lastWheel=now;this.zoomBy(e.deltaY<0?1:-1,this.location(e));}
+    keydown(e){if(e.target!==this.el)return;const step=e.shiftKey?160:60,c=this.centerPixel();let moved=true;
+      if(e.key==='ArrowLeft')c.x-=step;else if(e.key==='ArrowRight')c.x+=step;else if(e.key==='ArrowUp')c.y-=step;else if(e.key==='ArrowDown')c.y+=step;
+      else if(e.key==='+'||e.key==='='){this.zoomBy(1);e.preventDefault();return;}else if(e.key==='-'){this.zoomBy(-1);e.preventDefault();return;}
+      else if(e.key==='Enter'&&this.mode==='plot'){this.options.onAdd({...this.center});e.preventDefault();return;}else moved=false;
+      if(moved){e.preventDefault();this.setView(C.unproject(c.x,c.y,this.zoom));}}
+    scheduleRender(){if(!this.frame)this.frame=requestAnimationFrame(()=>{this.frame=0;this.render();});}
+    render(){
+      this.width=this.el.clientWidth;this.height=this.el.clientHeight;
+      const cp=this.centerPixel();this.origin={x:cp.x-this.width/2,y:cp.y-this.height/2};
+      this.svg.setAttribute('viewBox',`0 0 ${this.width} ${this.height}`);
+      // Apply an identical common translation to the canonical projected positions.
+      this.options.onRender(this);
+      this.positionExistingTiles();clearTimeout(this.tileTimer);
+      this.tileTimer=setTimeout(()=>this.renderTiles(),this.pointers.size?100:30);
+    }
+    positionExistingTiles(){
+      const z=Math.floor(this.zoom),scale=2**(this.zoom-z);
+      for(const entry of this.tiles.values()){
+        if(entry.z!==z){entry.el.style.visibility='hidden';continue;}entry.el.style.visibility='visible';
+        entry.el.style.transform=`translate(${entry.x*256*scale-this.origin.x}px,${entry.y*256*scale-this.origin.y}px)`;
+        entry.el.style.width=`${256*scale+.1}px`;entry.el.style.height=`${256*scale+.1}px`;
+      }
+    }
+    renderTiles(){
+      if(!this.networkAllowed)return;
+      const z=Math.floor(this.zoom),scale=2**(this.zoom-z),tileSize=256*scale,n=2**z;
+      const x0=Math.floor(this.origin.x/tileSize),x1=Math.floor((this.origin.x+this.width-1)/tileSize);
+      const y0=Math.max(0,Math.floor(this.origin.y/tileSize)),y1=Math.min(n-1,Math.floor((this.origin.y+this.height-1)/tileSize));
+      const needed=new Set();
+      // Only currently visible tiles; no prefetch, offline cache, or cache bypass.
+      for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){
+        const key=`${z}/${x}/${y}`;needed.add(key);
+        if(!this.tiles.has(key)){
+          const img=document.createElement('img');img.alt='';img.draggable=false;img.decoding='async';img.referrerPolicy='strict-origin-when-cross-origin';
+          img.addEventListener('load',()=>{this.tileSuccess++;this.options.onTileStatus('ready');});
+          img.addEventListener('error',()=>{this.tileFailures++;img.classList.add('tile-failed');if(this.tileFailures>2)this.options.onTileStatus('error');});
+          img.src=`https://tile.openstreetmap.org/${z}/${C.mod(x,n)}/${y}.png`;
+          this.tileRoot.append(img);this.tiles.set(key,{el:img,x,y,z});
+        }
+      }
+      for(const [key,entry] of this.tiles)if(!needed.has(key)){entry.el.remove();this.tiles.delete(key);}
+      this.positionExistingTiles();
+    }
+    retryTiles(){for(const t of this.tiles.values())t.el.remove();this.tiles.clear();this.tileFailures=0;this.scheduleRender();}
+  }
+  window.ConstellationMap=ConstellationMap;
+})();
+
+</script>
+  <script>
+(function () {
+  'use strict';
+  const C=window.ConstellationCore, $=id=>document.getElementById(id);
+  const STORAGE_KEY='map-to-constellation.project.v1';
+  const PALETTE=['#C2714F','#D4AC60','#839776','#6D95A8','#A296B6','#465C52'];
+  const icon=name=>`<svg class="icon" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  const clone=value=>JSON.parse(JSON.stringify(value));
+  let storageBlocked=false,storageMessage='',state=loadLocal(),selected=null,map=null;
+  let undoStack=[],redoStack=[],currentScene=null,cachedProjected=[],sceneDirty=true,lastSceneZoom=null;
+  let saveTimer=0,toastTimer=0,busyPNG=false,styleBefore=null,pendingConfirm=null,lastSearch=0;
+  let searchController=null,searchGeneration=0,lastNetworkStatus='loading';
+
+  function loadLocal(){
+    try {const raw=localStorage.getItem(STORAGE_KEY);if(raw)return C.validateProject(JSON.parse(raw));}
+    catch(error){storageBlocked=true;storageMessage='Local saving is unavailable, or the saved project could not be read. Existing data has not been overwritten. Save a JSON backup of your work. Open a valid backup or start a new project to retry local saving.';}
+    return C.emptyProject();
+  }
+  function toast(message,error=false){clearTimeout(toastTimer);$('toast-container').innerHTML=`<div class="toast${error?' error':''}">${C.escape(message)}</div>`;toastTimer=setTimeout(()=>{$('toast-container').replaceChildren();},error?7500:4000);}
+  function saveStatus(text,warning=false){$('save-status').classList.toggle('unsaved',warning);$('save-status').innerHTML=`<span></span>${C.escape(text)}`;}
+  function showStorageNotice(){ $('storage-notice').hidden=!storageBlocked;$('storage-notice').textContent=storageMessage; }
+  function persistNow(){
+    clearTimeout(saveTimer);if(map)state.view=map.getView();
+    if(storageBlocked){saveStatus('Backup recommended',true);return;}
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));saveStatus('Saved on this device');}
+    catch(error){storageBlocked=true;storageMessage='This browser could not save the project. Your current points are still here. Use Project → Save project backup to keep them.';showStorageNotice();saveStatus('Not saved — export backup',true);}
+  }
+  function persist(){clearTimeout(saveTimer);if(!storageBlocked)saveStatus('Saving…');saveTimer=setTimeout(persistNow,220);}
+  function snapshot(){if(map)state.view=map.getView();return JSON.stringify(state);}
+  function commitBefore(before){if(before!==snapshot()){undoStack.push(before);if(undoStack.length>60)undoStack.shift();redoStack=[];}sceneDirty=true;renderAll();persist();}
+  function change(fn){finishStyleGesture();const before=snapshot();fn();commitBefore(before);}
+  function finishStyleGesture(){if(styleBefore!==null){const before=styleBefore;styleBefore=null;commitBefore(before);}}
+  function currentPoint(){return state.points.find(p=>p.id===selected)||null;}
+  function currentStyle(){return currentPoint()||state.defaults;}
+  function styleOnly(p){return {shape:p.shape,color:p.color,size:p.size};}
+  function setStyle(key,value){change(()=>{currentStyle()[key]=value;});}
+  function previewStyle(key,value){if(styleBefore===null)styleBefore=snapshot();currentStyle()[key]=value;sceneDirty=true;renderAll();persist();}
+  function setIfInactive(id,value){if(document.activeElement!==$(id))$(id).value=value;}
+  function id(){return 'p_'+(globalThis.crypto?.randomUUID?crypto.randomUUID().replace(/-/g,''):Date.now().toString(36)+Math.random().toString(36).slice(2));}
+  function addPoint(ll){
+    try {
+      if(state.points.length>=C.LIMIT)throw new Error(`This project has reached the ${C.LIMIT.toLocaleString()} point limit.`);
+      const coords=C.coordinateAt(ll.lat,ll.lng),style=styleOnly(currentStyle()),newId=id();
+      change(()=>{state.defaults=style;state.points.push({id:newId,name:`Point ${nextNumber()}`,...coords,...style});selected=newId;});
+    } catch(error){toast(error.message,true);}
+  }
+  function nextNumber(){let n=state.points.length+1;const names=new Set(state.points.map(p=>p.name));while(names.has(`Point ${n}`))n++;return n;}
+  function selectPoint(pointId){finishStyleGesture();selected=pointId;renderAll();}
+  function deleteSelected(){if(!selected)return;change(()=>{state.points=state.points.filter(p=>p.id!==selected);selected=null;});toast('Point removed. Undo brings it back.');}
+  function setMode(mode){map.setMode(mode);for(const key of ['plot','pan']){$(`mode-${key}`).classList.toggle('active',key===mode);$(`mode-${key}`).setAttribute('aria-pressed',String(key===mode));} }
+
+  function renderStyle(){
+    const style=currentStyle(),point=currentPoint();
+    $('editing-caption').textContent=point?`Editing ${point.name||'this point'}`:'Style for new points';
+    $('editing-caption').parentElement.classList.toggle('is-editing',!!point);$('deselect').hidden=!point;
+    for(const b of document.querySelectorAll('[data-shape]')){const active=b.dataset.shape===style.shape;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));}
+    for(const b of document.querySelectorAll('[data-color]')){const active=b.dataset.color===style.color.toUpperCase();b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));}
+    setIfInactive('color-picker',style.color);setIfInactive('hex-color',style.color.toUpperCase());setIfInactive('icon-size',style.size);$('size-output').textContent=`${style.size} px`;
+    $('selected-editor').hidden=!point;
+    if(point){setIfInactive('point-name',point.name);setIfInactive('edit-lat',String(point.lat));setIfInactive('edit-lng',String(point.lng));}
+  }
+  function renderList(){
+    const focusedId=$('point-list').contains(document.activeElement)?document.activeElement.dataset.listId:null;
+    $('point-count').textContent=state.points.length;$('empty-list').hidden=state.points.length>0;$('clear-points').disabled=!state.points.length;$('fit-points').disabled=!state.points.length;
+    $('point-list').innerHTML=state.points.map((p,i)=>`<button class="point-row${p.id===selected?' selected':''}" data-list-id="${C.escape(p.id)}" aria-pressed="${p.id===selected}" title="Select ${C.escape(p.name)}"><svg aria-hidden="true" viewBox="-14 -14 28 28">${C.shapeMarkup({...p,size:14})}</svg><span><strong>${C.escape(p.name||'Unnamed point')}</strong><small>${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}</small></span><span class="row-index">${String(i+1).padStart(2,'0')}</span></button>`).join('');
+    $('empty-map-hint').hidden=state.points.length>0;$('undo').disabled=!undoStack.length;$('redo').disabled=!redoStack.length;
+    if(focusedId){const row=[...$('point-list').children].find(el=>el.dataset.listId===focusedId);if(row)row.focus({preventScroll:true});else $('map').focus({preventScroll:true});}
+  }
+  function renderMapPoints(m){
+    if(sceneDirty||lastSceneZoom!==m.zoom){cachedProjected=C.projectPoints(state.points,m.zoom);currentScene=C.cropScene(cachedProjected);lastSceneZoom=m.zoom;sceneDirty=false;renderPreview();}
+    let visible=0;const markup=[];
+    for(const p of cachedProjected){const x=p.x-m.origin.x,y=p.y-m.origin.y,r=Math.max(p.size,20);
+      if(x+r<0||y+r<0||x-r>m.width||y-r>m.height)continue;visible++;
+      markup.push(`<g class="point-group" data-point-id="${C.escape(p.id)}" transform="translate(${C.number(x)} ${C.number(y)})" role="button" tabindex="0" aria-label="Select ${C.escape(p.name)}"><title>${C.escape(p.name)}</title><circle class="point-hit" r="${Math.max(13,p.size*.75)}"/>${selected===p.id?`<circle class="selection-ring" r="${p.size*.72+5}"/>`:''}<g class="point-art">${C.shapeMarkup(p)}</g></g>`);
+    }
+    const focusedId=m.svg.contains(document.activeElement)?document.activeElement.dataset.pointId:null;
+    m.svg.innerHTML=markup.join('');
+    if(focusedId){const point=[...m.svg.children].find(el=>el.dataset.pointId===focusedId);(point||m.el).focus({preventScroll:true});}
+    const hidden=state.points.length-visible;renderExportWarning(hidden);renderZoom(m);
+  }
+  function renderPreview(){
+    $('preview-empty').hidden=!!currentScene;
+    if(currentScene){$('preview-art').innerHTML=C.toSVG(currentScene);const svg=$('preview-art').querySelector('svg');svg.setAttribute('style','width:100%;height:100%');svg.setAttribute('aria-label','Constellation export preview');
+      $('export-count').textContent=String(state.points.length);$('export-dimensions').textContent=`${currentScene.width.toLocaleString()} × ${currentScene.height.toLocaleString()} px`;
+    }else{$('preview-art').replaceChildren();$('export-count').textContent='—';$('export-dimensions').textContent='—';}
+    $('export-svg').disabled=!currentScene;$('export-png').disabled=!C.pngAllowed(currentScene)||busyPNG;
+    $('export-png').title=currentScene&&!C.pngAllowed(currentScene)?'This pattern exceeds the safe PNG canvas limit. Export SVG instead.':'Export at the current map spacing';
+  }
+  function renderExportWarning(offscreen){
+    let text='';
+    if(currentScene&&!C.pngAllowed(currentScene))text='This pattern exceeds the safe PNG limit. SVG is still available at the exact same spacing. No automatic resizing has been applied.';
+    else if(offscreen>0)text=`${offscreen} point${offscreen===1?' is':'s are'} outside the visible map. Exports include all ${state.points.length} points, at the current scale.`;
+    $('export-warning').hidden=!text;$('export-warning').textContent=text;
+  }
+  function renderZoom(m){$('zoom-label').textContent=`Zoom ${Number(m.zoom.toFixed(2))} · ${m.locked?'Scale locked':'Scale unlocked'}`;$('zoom-in').disabled=m.locked||m.zoom>=19;$('zoom-out').disabled=m.locked||m.zoom<=2;$('lock-zoom').classList.toggle('active',m.locked);$('lock-zoom').setAttribute('aria-pressed',String(m.locked));$('lock-zoom').setAttribute('aria-label',m.locked?'Unlock map zoom':'Lock map zoom');$('lock-zoom').title=m.locked?'Unlock map zoom':'Lock map zoom to hold spacing';$('lock-zoom').innerHTML=icon(m.locked?'lock':'unlock');}
+  function renderAll(){renderStyle();renderList();setIfInactive('project-name',state.name);if(map)map.scheduleRender();}
+
+  function download(blob,filename){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;a.style.display='none';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
+  function filename(){return state.name.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9_-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70)||'constellation';}
+  function exportSVG(){try{const scene=C.buildScene(state.points,map.zoom);download(new Blob([C.toSVG(scene)],{type:'image/svg+xml;charset=utf-8'}),`${filename()}.svg`);toast('SVG exported. Spacing preserved; map left behind.');}catch(error){toast(error.message,true);}}
+  async function exportPNG(){
+    if(busyPNG)return;let imageURL=null;
+    try{
+      finishStyleGesture();const scene=C.buildScene(state.points,map.zoom);if(!scene)throw new Error('Add a point first.');if(!C.pngAllowed(scene))throw new Error('The pattern is too large for a safe PNG. Export SVG at the same spacing.');
+      const file=filename();busyPNG=true;$('export-png').disabled=true;$('export-png').querySelector('span').textContent='Preparing PNG…';
+      imageURL=URL.createObjectURL(new Blob([C.toSVG(scene)],{type:'image/svg+xml;charset=utf-8'}));
+      const image=await new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error('The browser could not render this SVG for PNG export.'));img.src=imageURL;});
+      const canvas=document.createElement('canvas');canvas.width=scene.width;canvas.height=scene.height;
+      const ctx=canvas.getContext('2d');if(!ctx)throw new Error('This browser could not allocate an image canvas. Export SVG instead.');
+      // No map screenshot, devicePixelRatio, background, fitting, or scale transform.
+      ctx.drawImage(image,0,0);
+      const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('PNG creation failed. Try the SVG export instead.')),'image/png'));
+      download(blob,`${file}.png`);canvas.width=canvas.height=1;toast(`PNG exported at ${scene.width} × ${scene.height} px. Transparent and precisely spaced.`);
+    }catch(error){toast(error.message,true);}finally{if(imageURL)URL.revokeObjectURL(imageURL);busyPNG=false;$('export-png').querySelector('span').textContent='Export PNG';renderPreview();}
+  }
+  function saveBackup(){finishStyleGesture();if(map)state.view=map.getView();download(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),`${filename()}.constellation.json`);toast('Editable project saved, including coordinates and map scale.');}
+  function closeMenu(){ $('project-menu').hidden=true;$('project-button').setAttribute('aria-expanded','false'); }
+  function ask(title,message,action,button='Continue'){$('confirm-title').textContent=title;$('confirm-message').textContent=message;$('confirm-ok').textContent=button;pendingConfirm=action;$('confirm-dialog').showModal();$('confirm-cancel').focus();}
+  function confirmReplacement(action,title='Replace this constellation?'){if(state.points.length)ask(title,'Save a project backup first to keep this version. This will replace the current project; Undo is also available.',action,'Replace project');else action();}
+  function replaceProject(project){
+    finishStyleGesture();const before=snapshot();state=C.validateProject(project);selected=null;storageBlocked=false;storageMessage='';showStorageNotice();$('search-input').value='';$('search-results').hidden=true;
+    const v=clone(state.view);map.setView(v.center,v.zoom,true);map.setLocked(v.locked);setMode('plot');
+    commitBefore(before);persistNow();
+  }
+  function demoProject(){
+    const d=C.emptyProject();d.name='A few favorite places';d.view={center:{lat:38.9015,lng:-77.0395},zoom:14,locked:false};
+    const places=[['Morning walk',38.9148,-77.0572,'circle','#C2714F',20],['A favorite corner',38.9193,-77.0381,'star','#D4AC60',25],['Somewhere special',38.9025,-77.0441,'diamond','#A296B6',22],['A good memory',38.8977,-77.0325,'circle','#6D95A8',17],['By the water',38.8894,-77.0496,'triangle','#839776',24],['Meet me here',38.8908,-77.0212,'square','#C2714F',16],['A little detour',38.8829,-77.0353,'hexagon','#465C52',22]];
+    d.points=places.map((p,i)=>({id:`example_${i+1}`,name:p[0],lat:p[1],lng:p[2],world:0,shape:p[3],color:p[4],size:p[5]}));return d;
+  }
+  function loadDemo(){confirmReplacement(()=>{replaceProject(demoProject());map.fit(state.points);toast('An example pattern to explore. Every point is editable.');});}
+  function undo(){finishStyleGesture();if(!undoStack.length)return;redoStack.push(snapshot());restoreHistory(undoStack.pop());}
+  function redo(){finishStyleGesture();if(!redoStack.length)return;undoStack.push(snapshot());restoreHistory(redoStack.pop());}
+  function restoreHistory(raw){state=C.validateProject(JSON.parse(raw));if(!state.points.some(p=>p.id===selected))selected=null;const v=clone(state.view);map.setView(v.center,v.zoom,true);map.setLocked(v.locked);sceneDirty=true;renderAll();persist();}
+  async function openFile(file){
+    if(!file)return;
+    try{if(file.size>2*1024*1024)throw new Error('Project files must be smaller than 2 MB.');const clean=C.validateProject(JSON.parse(await file.text()));confirmReplacement(()=>{replaceProject(clean);toast(`Opened “${clean.name}”.`);});}
+    catch(error){toast(`Could not open project: ${error.message}`,true);}finally{$('file-input').value='';}
+  }
+
+  function tileStatus(status){
+    lastNetworkStatus=status;const el=$('map-status');
+    if(status==='ready'){el.hidden=true;return;}
+    if(status==='local'){el.textContent='Local file mode: plotting, editing, and exports work. To load the live map and place search, run Start.command, Start.bat, or start.py from the app folder.';el.hidden=false;return;}
+    el.innerHTML=`${status==='slow'?'The map is taking longer to load.':'Map tiles could not load.'} Your points and exports still work. Check your internet connection.<button id="retry-map">Retry</button>`;el.hidden=false;
+    $('retry-map').onclick=()=>{el.hidden=true;map.retryTiles();};
+  }
+  function searchMessage(text){$('search-results').hidden=false;$('search-results').innerHTML=`<p>${C.escape(text)}</p>`;}
+  async function search(event){
+    event.preventDefault();const query=$('search-input').value.trim();if(!query)return;
+    const coords=query.match(/^\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s*,\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s*$/);
+    if(coords){try{const ll=C.nearestCoordinate(Number(coords[1]),Number(coords[2]),map.center.lng);map.setView({lat:ll.lat,lng:ll.lng+360*ll.world},Math.max(14,map.zoom));$('search-results').hidden=true;toast('Map centered. Click to plot, or use exact coordinate entry.');}catch(error){searchMessage(error.message);}return;}
+    if(!map.networkAllowed){searchMessage('Place search needs the app opened through localhost or HTTPS. Coordinate searches still work in local file mode.');return;}
+    if(Date.now()-lastSearch<1100){searchMessage('Please wait a moment before submitting another search.');return;}
+    lastSearch=Date.now();if(searchController)searchController.abort();searchController=new AbortController();const token=++searchGeneration;
+    const timer=setTimeout(()=>searchController?.abort(),12000);$('search-submit').disabled=true;searchMessage('Looking for that place…');
+    try{
+      const url=new URL('https://nominatim.openstreetmap.org/search');url.searchParams.set('q',query);url.searchParams.set('format','jsonv2');url.searchParams.set('limit','5');
+      const response=await fetch(url,{signal:searchController.signal,headers:{Accept:'application/json'},referrerPolicy:'strict-origin-when-cross-origin'});
+      if(!response.ok)throw new Error(response.status===429?'Place search is temporarily rate-limited. Try coordinates or try again later.':'Place search is unavailable right now. You can still navigate the map or enter coordinates.');
+      const results=await response.json();if(token!==searchGeneration)return;
+      if(!Array.isArray(results)||!results.length){searchMessage('No places found. Try a city, a more specific address, or latitude, longitude.');return;}
+      const clean=results.filter(r=>Number.isFinite(Number(r.lat))&&Number.isFinite(Number(r.lon))&&Math.abs(Number(r.lat))<=C.MAX_LAT&&Math.abs(Number(r.lon))<=180);
+      $('search-results').replaceChildren();$('search-results').hidden=false;
+      for(const r of clean){const button=document.createElement('button');button.type='button';button.textContent=r.display_name||'Unnamed place';button.onclick=()=>{const ll=C.nearestCoordinate(Number(r.lat),Number(r.lon),map.center.lng);map.setView({lat:ll.lat,lng:ll.lng+360*ll.world},14);$('search-input').value=String(r.display_name||query).slice(0,180);$('search-results').hidden=true;};$('search-results').append(button);}
+      const credit=document.createElement('p');credit.className='search-credit';credit.textContent='Search by Nominatim · © OpenStreetMap contributors';$('search-results').append(credit);
+    }catch(error){if(token===searchGeneration)searchMessage(error.name==='AbortError'?'Place search timed out. Try again, or navigate with coordinates.':error.message);}
+    finally{clearTimeout(timer);if(token===searchGeneration)$('search-submit').disabled=false;}
+  }
+
+  // Build controls from the same shape definitions as both renderers.
+  $('shape-options').innerHTML=C.SHAPES.map(shape=>`<button type="button" class="shape-option" data-shape="${shape}" aria-pressed="false" aria-label="${shape[0].toUpperCase()+shape.slice(1)} icon"><svg aria-hidden="true" viewBox="-12 -12 24 24">${C.shapeMarkup({shape,size:17,color:'#6D7E65'}).replace(/fill="#[A-Fa-f0-9]{6}"/,'fill="currentColor"')}</svg><span>${shape[0].toUpperCase()+shape.slice(1)}</span></button>`).join('');
+  $('swatches').innerHTML=PALETTE.map(color=>`<button type="button" class="swatch" data-color="${color}" style="background:${color};color:${color}" aria-pressed="false" aria-label="Set color ${color}" title="${color}"></button>`).join('');
+  showStorageNotice();
+  map=new window.ConstellationMap($('map'),{
+    view:state.view,onAdd:addPoint,onSelect:selectPoint,onRender:renderMapPoints,onTileStatus:tileStatus,
+    onViewChange:view=>{state.view=view;persist();},
+    onPointer:ll=>{$('cursor-coordinates').textContent=`${ll.lat.toFixed(5)}, ${C.normalizeLongitude(ll.lng).toFixed(5)}`;}
+  });
+  setTimeout(()=>{if(lastNetworkStatus==='loading')tileStatus('slow');},9000);
+  setMode('plot');renderAll();persist();
+
+  $('shape-options').addEventListener('click',e=>{const button=e.target.closest('[data-shape]');if(button)setStyle('shape',button.dataset.shape);});
+  $('swatches').addEventListener('click',e=>{const button=e.target.closest('[data-color]');if(button)setStyle('color',button.dataset.color);});
+  $('color-picker').addEventListener('input',e=>previewStyle('color',e.target.value.toUpperCase()));$('color-picker').addEventListener('change',finishStyleGesture);
+  $('hex-color').addEventListener('change',e=>{const color=e.target.value.trim().toUpperCase();if(!/^#[0-9A-F]{6}$/.test(color)){e.target.setAttribute('aria-invalid','true');toast('Use a six-digit color such as #C2714F.',true);return;}e.target.removeAttribute('aria-invalid');setStyle('color',color);});
+  $('icon-size').addEventListener('input',e=>previewStyle('size',Number(e.target.value)));$('icon-size').addEventListener('change',finishStyleGesture);
+  $('deselect').onclick=()=>selectPoint(null);
+  $('point-name').addEventListener('change',e=>{if(currentPoint())change(()=>{currentPoint().name=e.target.value.trim().slice(0,80)||'Unnamed point';});});
+  $('project-name').addEventListener('change',e=>change(()=>{state.name=e.target.value.trim().slice(0,80)||'Untitled constellation';}));
+  $('delete-point').onclick=deleteSelected;
+  $('apply-coordinates').onclick=()=>{
+    const p=currentPoint();if(!p)return;
+    try{if(!$('edit-lat').value.trim()||!$('edit-lng').value.trim())throw new Error('Enter both latitude and longitude.');const ll=C.nearestCoordinate(Number($('edit-lat').value),Number($('edit-lng').value),p.lng+360*p.world);change(()=>Object.assign(p,ll));toast('Point location updated.');}catch(error){toast(error.message,true);}
+  };
+  $('coordinate-form').onsubmit=e=>{e.preventDefault();try{const ll=C.nearestCoordinate(Number($('add-lat').value),Number($('add-lng').value),map.center.lng);addPoint({lat:ll.lat,lng:ll.lng+360*ll.world});map.setView({lat:ll.lat,lng:ll.lng+360*ll.world});}catch(error){toast(error.message,true);}};
+  $('point-list').onclick=e=>{const b=e.target.closest('[data-list-id]');if(b)selectPoint(b.dataset.listId);};
+  $('map').querySelector('.point-layer').addEventListener('keydown',e=>{const g=e.target.closest('[data-point-id]');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();e.stopPropagation();selectPoint(g.dataset.pointId);}});
+  $('mode-plot').onclick=()=>setMode('plot');$('mode-pan').onclick=()=>setMode('pan');
+  $('zoom-in').onclick=()=>map.zoomBy(1);$('zoom-out').onclick=()=>map.zoomBy(-1);
+  $('fit-points').onclick=()=>{map.fit(state.points);if(map.locked)toast('Centered on your points. Zoom stays locked.');};
+  $('lock-zoom').onclick=()=>{map.setLocked(!map.locked);renderZoom(map);toast(map.locked?'Map scale locked. Pan freely; spacing will not change.':'Map scale unlocked. Zoom changes point spacing on the map.');};
+  for(const kind of ['map','pattern'])$(`view-${kind}`).onclick=()=>{$('map').classList.toggle('pattern-mode',kind==='pattern');for(const k of ['map','pattern']){$(`view-${k}`).classList.toggle('active',k===kind);$(`view-${k}`).setAttribute('aria-pressed',String(k===kind));}};
+  $('undo').onclick=undo;$('redo').onclick=redo;
+  $('clear-points').onclick=()=>ask('Clear all points?',`Remove all ${state.points.length} points from this project? Undo can restore them.`,()=>{change(()=>{state.points=[];selected=null;});},'Clear points');
+  $('try-example').onclick=loadDemo;$('demo-project').onclick=()=>{closeMenu();loadDemo();};
+  $('export-svg').onclick=exportSVG;$('export-png').onclick=exportPNG;
+  for(const b of document.querySelectorAll('[data-preview]'))b.onclick=()=>{$('preview-stage').className=`preview-stage ${b.dataset.preview}`;for(const btn of document.querySelectorAll('[data-preview]')){btn.classList.toggle('active',btn===b);btn.setAttribute('aria-pressed',String(btn===b));}};
+  $('project-button').onclick=()=>{const open=$('project-menu').hidden;$('project-menu').hidden=!open;$('project-button').setAttribute('aria-expanded',String(open));if(open)$('project-menu').querySelector('button').focus();};
+  $('save-project').onclick=()=>{closeMenu();saveBackup();};$('save-backup-secondary').onclick=saveBackup;
+  $('load-project').onclick=()=>{closeMenu();$('file-input').click();};$('file-input').onchange=e=>openFile(e.target.files[0]);
+  $('new-project').onclick=()=>{closeMenu();confirmReplacement(()=>{replaceProject(C.emptyProject());toast('A fresh canvas for new places.');},'Start a new constellation?');};
+  $('help-button').onclick=()=>{$('help-dialog').showModal();};for(const b of document.querySelectorAll('[data-close-dialog]'))b.onclick=()=>$('help-dialog').close();
+  $('confirm-cancel').onclick=()=>{pendingConfirm=null;$('confirm-dialog').close();};$('confirm-dialog').addEventListener('cancel',()=>{pendingConfirm=null;});
+  $('confirm-ok').onclick=()=>{const action=pendingConfirm;pendingConfirm=null;$('confirm-dialog').close();action?.();};
+  $('search-form').onsubmit=search;
+  $('locate-button').onclick=()=>{
+    if(!navigator.geolocation){toast('Location is not available in this browser. Search or enter coordinates instead.',true);return;}
+    toast('Requesting your location…');navigator.geolocation.getCurrentPosition(pos=>{try{const ll=C.nearestCoordinate(pos.coords.latitude,pos.coords.longitude,map.center.lng);map.setView({lat:ll.lat,lng:ll.lng+360*ll.world},15);toast('Map centered on your location. No point was added automatically.');}catch(error){toast(error.message,true);}},()=>toast('Location access was unavailable or declined. Search or enter coordinates instead.',true),{timeout:12000,maximumAge:60000});
+  };
+  document.addEventListener('click',e=>{if(!e.target.closest('#project-menu,#project-button'))closeMenu();if(!e.target.closest('.map-search'))$('search-results').hidden=true;});
+  document.addEventListener('keydown',e=>{
+    const input=/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable;
+    if(e.key==='Escape'){closeMenu();$('search-results').hidden=true;if(!document.querySelector('dialog[open]')&&!input)selectPoint(null);return;}
+    if(input||document.querySelector('dialog[open]'))return;
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();return;}
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();redo();return;}
+    if(e.ctrlKey||e.metaKey||e.altKey)return;
+    if(e.key.toLowerCase()==='p')setMode('plot');if(e.key.toLowerCase()==='v')setMode('pan');
+    if((e.key==='Delete'||e.key==='Backspace')&&selected){e.preventDefault();deleteSelected();}
+  });
+  window.addEventListener('beforeunload',persistNow);
+  window.addEventListener('storage',e=>{if(e.key===STORAGE_KEY&&e.newValue!==JSON.stringify(state)){storageBlocked=true;storageMessage='This project changed in another tab. Automatic saving is paused to avoid overwriting it. Save a backup of this tab, then reload to use the other version, or open your backup to keep this version.';showStorageNotice();saveStatus('Another tab changed this project',true);}});
+  // Read-only diagnostics for reproducibility and automated geometry verification.
+  window.MapToConstellation=Object.freeze({getProject:()=>clone({...state,view:map.getView()}),getExportScene:()=>clone(C.buildScene(state.points,map.zoom)),getScreenPoints:()=>state.points.map(p=>({id:p.id,...map.toScreen(p)}))});
+})();
+
+</script>
+</body>
+</html>

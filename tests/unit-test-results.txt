@@ -1,0 +1,200 @@
+
+> map-to-constellation@1.0.0 test
+> node --test tests/core.test.cjs
+
+TAP version 13
+# Subtest: known Web Mercator origin and world edges
+ok 1 - known Web Mercator origin and world edges
+  ---
+  duration_ms: 3.028713
+  type: 'test'
+  ...
+# Subtest: projection round-trips coordinates at integer and fractional zooms
+ok 2 - projection round-trips coordinates at integer and fractional zooms
+  ---
+  duration_ms: 2.06704
+  type: 'test'
+  ...
+# Subtest: canonical longitude retains a separate world copy
+ok 3 - canonical longitude retains a separate world copy
+  ---
+  duration_ms: 0.202395
+  type: 'test'
+  ...
+# Subtest: coordinate entry chooses the world copy nearest the existing map
+ok 4 - coordinate entry chooses the world copy nearest the existing map
+  ---
+  duration_ms: 0.118649
+  type: 'test'
+  ...
+# Subtest: empty scenes cannot be exported
+ok 5 - empty scenes cannot be exported
+  ---
+  duration_ms: 0.406324
+  type: 'test'
+  ...
+# Subtest: tight crop fully contains circle, including its extreme edges
+ok 6 - tight crop fully contains circle, including its extreme edges
+  ---
+  duration_ms: 0.284069
+  type: 'test'
+  ...
+# Subtest: tight crop fully contains square, including its extreme edges
+ok 7 - tight crop fully contains square, including its extreme edges
+  ---
+  duration_ms: 0.201063
+  type: 'test'
+  ...
+# Subtest: tight crop fully contains triangle, including its extreme edges
+ok 8 - tight crop fully contains triangle, including its extreme edges
+  ---
+  duration_ms: 0.103386
+  type: 'test'
+  ...
+# Subtest: tight crop fully contains diamond, including its extreme edges
+ok 9 - tight crop fully contains diamond, including its extreme edges
+  ---
+  duration_ms: 0.286282
+  type: 'test'
+  ...
+# Subtest: tight crop fully contains star, including its extreme edges
+ok 10 - tight crop fully contains star, including its extreme edges
+  ---
+  duration_ms: 0.406313
+  type: 'test'
+  ...
+# Subtest: tight crop fully contains hexagon, including its extreme edges
+ok 11 - tight crop fully contains hexagon, including its extreme edges
+  ---
+  duration_ms: 0.169566
+  type: 'test'
+  ...
+# Subtest: every pairwise x/y displacement survives export unchanged
+ok 12 - every pairwise x/y displacement survives export unchanged
+  ---
+  duration_ms: 18.766124
+  type: 'test'
+  ...
+# Subtest: Euclidean distances survive translation-only export
+ok 13 - Euclidean distances survive translation-only export
+  ---
+  duration_ms: 0.216678
+  type: 'test'
+  ...
+# Subtest: panning changes only the map origin, not exported positions
+ok 14 - panning changes only the map origin, not exported positions
+  ---
+  duration_ms: 0.124658
+  type: 'test'
+  ...
+# Subtest: zoom changes all geographic center offsets uniformly
+ok 15 - zoom changes all geographic center offsets uniformly
+  ---
+  duration_ms: 0.089695
+  type: 'test'
+  ...
+# Subtest: date-line points keep their plotted adjacency without independent rewrapping
+ok 16 - date-line points keep their plotted adjacency without independent rewrapping
+  ---
+  duration_ms: 0.086831
+  type: 'test'
+  ...
+# Subtest: points intentionally plotted in separate world copies stay separated
+ok 17 - points intentionally plotted in separate world copies stay separated
+  ---
+  duration_ms: 0.081533
+  type: 'test'
+  ...
+# Subtest: overlapping points and draw order are preserved
+ok 18 - overlapping points and draw order are preserved
+  ---
+  duration_ms: 0.354655
+  type: 'test'
+  ...
+# Subtest: vertical and horizontal lines do not cause zero-sized or stretched exports
+ok 19 - vertical and horizontal lines do not cause zero-sized or stretched exports
+  ---
+  duration_ms: 0.116986
+  type: 'test'
+  ...
+# Subtest: negative and subpixel positions remain unrounded relative to each other
+ok 20 - negative and subpixel positions remain unrounded relative to each other
+  ---
+  duration_ms: 0.089956
+  type: 'test'
+  ...
+# Subtest: SVG serialization keeps floating-point positions to subpixel precision
+ok 21 - SVG serialization keeps floating-point positions to subpixel precision
+  ---
+  duration_ms: 0.271169
+  type: 'test'
+  ...
+# Subtest: SVG contains no map image, geographic coordinates, names, or metadata
+ok 22 - SVG contains no map image, geographic coordinates, names, or metadata
+  ---
+  duration_ms: 0.148124
+  type: 'test'
+  ...
+# Subtest: SVG and PNG intrinsic dimensions use the identical cropped scene
+ok 23 - SVG and PNG intrinsic dimensions use the identical cropped scene
+  ---
+  duration_ms: 0.097497
+  type: 'test'
+  ...
+# Subtest: large PNG requests are rejected rather than silently rescaled
+ok 24 - large PNG requests are rejected rather than silently rescaled
+  ---
+  duration_ms: 0.102295
+  type: 'test'
+  ...
+# Subtest: JSON round-trip retains coordinates, worlds, colors, shapes, sizes, and zoom
+ok 25 - JSON round-trip retains coordinates, worlds, colors, shapes, sizes, and zoom
+  ---
+  duration_ms: 0.570351
+  type: 'test'
+  ...
+# Subtest: project import rejects malformed or unsafe fields
+ok 26 - project import rejects malformed or unsafe fields
+  ---
+  duration_ms: 0.57652
+  type: 'test'
+  ...
+# Subtest: duplicate IDs and oversized point arrays are rejected
+ok 27 - duplicate IDs and oversized point arrays are rejected
+  ---
+  duration_ms: 0.598364
+  type: 'test'
+  ...
+# Subtest: extra imported fields are discarded rather than executed
+ok 28 - extra imported fields are discarded rather than executed
+  ---
+  duration_ms: 0.104949
+  type: 'test'
+  ...
+# Subtest: HTML escaping covers names and attribute boundaries
+ok 29 - HTML escaping covers names and attribute boundaries
+  ---
+  duration_ms: 0.128724
+  type: 'test'
+  ...
+# Subtest: invalid colors cannot enter SVG markup
+ok 30 - invalid colors cannot enter SVG markup
+  ---
+  duration_ms: 0.090867
+  type: 'test'
+  ...
+# Subtest: new points cannot create world indices that project imports would reject
+ok 31 - new points cannot create world indices that project imports would reject
+  ---
+  duration_ms: 0.296127
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 88.215248

@@ -1,0 +1,90 @@
+{
+  "app": "map-to-constellation",
+  "version": 1,
+  "name": "A few favorite places",
+  "points": [
+    {
+      "id": "example_1",
+      "name": "Morning walk",
+      "lat": 38.9148,
+      "lng": -77.0572,
+      "world": 0,
+      "shape": "circle",
+      "color": "#C2714F",
+      "size": 20
+    },
+    {
+      "id": "example_2",
+      "name": "A favorite corner",
+      "lat": 38.9193,
+      "lng": -77.0381,
+      "world": 0,
+      "shape": "star",
+      "color": "#D4AC60",
+      "size": 25
+    },
+    {
+      "id": "example_3",
+      "name": "Somewhere special",
+      "lat": 38.9025,
+      "lng": -77.0441,
+      "world": 0,
+      "shape": "diamond",
+      "color": "#A296B6",
+      "size": 22
+    },
+    {
+      "id": "example_4",
+      "name": "A good memory",
+      "lat": 38.8977,
+      "lng": -77.0325,
+      "world": 0,
+      "shape": "circle",
+      "color": "#6D95A8",
+      "size": 17
+    },
+    {
+      "id": "example_5",
+      "name": "By the water",
+      "lat": 38.8894,
+      "lng": -77.0496,
+      "world": 0,
+      "shape": "triangle",
+      "color": "#839776",
+      "size": 24
+    },
+    {
+      "id": "example_6",
+      "name": "Meet me here",
+      "lat": 38.8908,
+      "lng": -77.0212,
+      "world": 0,
+      "shape": "square",
+      "color": "#C2714F",
+      "size": 16
+    },
+    {
+      "id": "example_7",
+      "name": "A little detour",
+      "lat": 38.8829,
+      "lng": -77.0353,
+      "world": 0,
+      "shape": "hexagon",
+      "color": "#465C52",
+      "size": 22
+    }
+  ],
+  "view": {
+    "center": {
+      "lat": 38.90110233252347,
+      "lng": -77.03919999999998
+    },
+    "zoom": 14,
+    "locked": false
+  },
+  "defaults": {
+    "shape": "circle",
+    "color": "#C2714F",
+    "size": 20
+  }
+}

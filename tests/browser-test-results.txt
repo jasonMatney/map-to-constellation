@@ -1,0 +1,25 @@
+PASS Initial page loads without JavaScript errors; empty exports are disabled
+PASS Click plotting round-trips to the exact clicked map pixel
+PASS Individual shape/color edits work; untrusted point names remain plain text
+PASS Exact coordinate entry retains precision and point styling is independent
+PASS Size and explicit coordinate editing update the selected point
+PASS Delete, undo, and redo restore exact point data
+PASS Panning leaves exports byte-for-byte equivalent; zoom lock blocks wheel zoom
+PASS Explicit zoom changes center spacing uniformly rather than rearranging points
+PASS Actual SVG download matches every on-map displacement and contains no geographic details
+PASS Rendered SVG map transforms match canonical screen positions to subpixel precision
+PASS Actual PNG has identical dimensions, transparent edges, and exact point center colors
+PASS JSON backup and local-storage API round-trip preserve coordinates, styles, and map scale
+PASS Invalid project imports leave the current project untouched
+PASS A downloaded project can be reopened with identical content
+PASS Coordinate search navigates without adding or moving any points
+PASS Offline place search provides actionable setup guidance
+PASS Date-line neighbors render and export together without rewrapping
+PASS Oversized PNG is refused without resizing; full-scale SVG remains available
+PASS All six icon shapes export without clipping
+PASS Desktop interaction suite produces no uncaught JavaScript errors
+PASS Mobile viewport has no horizontal overflow; touch plotting and PNG download work
+PASS Single-file edition supports offline plotting/export and explains live-map setup
+PASS Corrupt local data is not silently overwritten
+
+23 browser checks passed.

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#F6F5F0">
+  <meta name="description" content="Turn real places into a constellation of shapes. Export precisely spaced, tightly cropped PNG and SVG artwork without the map.">
+  <title>Map-to-Constellation — Your places, a new perspective</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232B5148'/%3E%3Ccircle cx='10' cy='10' r='3' fill='%23F4DD9C'/%3E%3Ccircle cx='22' cy='14' r='3' fill='%23C5B7D7'/%3E%3Ccircle cx='13' cy='23' r='3' fill='%23E4A484'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+  <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 15v5h16v-5"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 16v4h16v-4"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="m9 5-5 5 5 5M4 10h10a6 6 0 0 1 0 12"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 5 5 5-5 5m5-5H10a6 6 0 0 0 0 12"/></symbol>
+    <symbol id="i-fit" viewBox="0 0 24 24"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4m-4 5v2"/></symbol>
+    <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 7.5-2m-3.5 11v2"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path d="M7 12V6a2 2 0 0 1 4 0v6-8a2 2 0 0 1 4 0v8-6a2 2 0 0 1 4 0v10a6 6 0 0 1-6 6h-1c-3 0-4-2-6-4l-3-4a2 2 0 0 1 3-3l3 3"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V4h7l2 3h9v13H3V7Z"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .6-1.5 1-1.5 3m0 3v.1"/></symbol>
+  </defs></svg>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Map-to-Constellation home">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <span><strong>constellation</strong><small>FROM PLACES TO PATTERNS</small></span>
+    </a>
+    <div class="project-heading"><label class="sr-only" for="project-name">Project name</label><input id="project-name" maxlength="80" value="Untitled constellation" spellcheck="false"><span id="save-status" class="save-status"><span></span>Saved on this device</span></div>
+    <div class="top-actions"><button class="button subtle" id="project-button" aria-haspopup="menu" aria-expanded="false"><svg class="icon"><use href="#i-folder"/></svg><span>Project</span><span class="chevron">⌄</span></button><button class="icon-button" id="help-button" title="How it works" aria-label="How it works"><svg class="icon"><use href="#i-help"/></svg></button></div>
+    <div id="project-menu" class="project-menu" role="menu" hidden>
+      <button role="menuitem" id="save-project"><svg class="icon"><use href="#i-download"/></svg>Save project backup <small>JSON</small></button>
+      <button role="menuitem" id="load-project"><svg class="icon"><use href="#i-upload"/></svg>Open project…</button>
+      <button role="menuitem" id="demo-project"><svg class="icon"><use href="#i-pin"/></svg>Load example pattern</button>
+      <hr><button role="menuitem" id="new-project"><svg class="icon"><use href="#i-plus"/></svg>New constellation</button>
+    </div>
+    <input id="file-input" type="file" accept=".json,application/json" hidden>
+  </header>
+  <div id="storage-notice" class="storage-notice" role="alert" hidden></div>
+  <nav class="mobile-nav" aria-label="Workspace sections"><a href="#map-panel">Map</a><a href="#palette-panel">Points</a><a href="#export-panel">Export</a></nav>
+  <main class="workspace">
+    <aside id="palette-panel" class="sidebar palette-panel" aria-label="Point tools">
+      <div class="section-heading"><span class="eyebrow">01 / MAKE YOUR MARK</span><h1>Your point palette</h1><p>Little marks. Meaningful places.</p></div>
+      <div class="editing-context"><span id="editing-caption">Style for new points</span><button id="deselect" class="text-button" hidden>Done editing</button></div>
+      <fieldset class="shape-field"><legend>Shape</legend><div id="shape-options" class="shape-options" role="group" aria-label="Icon shape"></div></fieldset>
+      <fieldset class="color-field"><legend>Color <span>Any shade you like</span></legend><div id="swatches" class="swatches"></div><div class="color-entry"><label class="color-picker-label" title="Choose any color"><input type="color" id="color-picker" value="#C2714F" aria-label="Choose any icon color"></label><label class="sr-only" for="hex-color">Hex color</label><input id="hex-color" value="#C2714F" spellcheck="false" maxlength="7" pattern="#[0-9a-fA-F]{6}" aria-label="Hex color"><span>HEX</span></div></fieldset>
+      <div class="size-field"><label for="icon-size">Size <output id="size-output">20 px</output></label><input id="icon-size" type="range" min="6" max="80" value="20" step="1"><div class="range-labels"><span>Small</span><span>Large</span></div></div>
+      <section id="selected-editor" class="selected-editor" hidden aria-label="Selected point details"><label for="point-name">Point name <span>Not exported</span></label><input id="point-name" type="text" maxlength="80"><div class="coordinate-inputs"><label>Latitude<input id="edit-lat" type="number" step="any" min="-85.0511287798066" max="85.0511287798066"></label><label>Longitude<input id="edit-lng" type="number" step="any" min="-180" max="180"></label></div><button class="button small full" id="apply-coordinates">Apply coordinates</button><p class="micro">Points do not drag accidentally. Change their location here.</p><button id="delete-point" class="text-button danger"><svg class="icon"><use href="#i-trash"/></svg>Delete this point</button></section>
+      <details class="coordinate-details" id="coordinate-details"><summary><svg class="icon"><use href="#i-target"/></svg>Add an exact location<span>+</span></summary><form id="coordinate-form"><div class="coordinate-inputs"><label>Latitude<input id="add-lat" type="number" step="any" min="-85.0511287798066" max="85.0511287798066" required placeholder="38.8977"></label><label>Longitude<input id="add-lng" type="number" step="any" min="-180" max="180" required placeholder="-77.0365"></label></div><button class="button small full" type="submit">Add point at coordinates</button></form></details>
+      <section class="points-section"><div class="points-heading"><h2>Your points <span id="point-count">0</span></h2><button class="text-button" id="clear-points" disabled>Clear</button></div><div id="point-list" class="point-list" aria-label="Your points"></div><div id="empty-list" class="empty-list"><p>Your next favorite pattern starts<br>with a single point.</p><button id="try-example" class="text-button">Try an example <span>↗</span></button></div></section>
+      <div class="sidebar-note"><span class="tiny-dot"></span>For you, on this device. No account needed.</div>
+    </aside>
+    <section class="map-panel" id="map-panel" aria-label="Map workspace">
+      <div class="map-heading"><div><span class="eyebrow">02 / FIND YOUR PLACES</span><h2>A different kind of star map.</h2></div><div class="segmented view-switch" role="group" aria-label="Map visibility"><button id="view-map" class="active" aria-pressed="true">Map</button><button id="view-pattern" aria-pressed="false">Pattern</button></div></div>
+      <div class="map-wrap">
+        <div id="map" class="map" tabindex="0" role="region" aria-label="Interactive map. Drag to pan, scroll to zoom. In Plot mode, click to add a point, or press Enter to add at the center." data-mode="plot">
+          <div class="tile-layer" aria-hidden="true"></div>
+          <svg class="point-layer" xmlns="http://www.w3.org/2000/svg" aria-label="Plotted points"></svg>
+          <div class="map-search" data-map-control>
+            <form id="search-form"><svg class="icon"><use href="#i-search"/></svg><label class="sr-only" for="search-input">Search for a place or coordinates</label><input id="search-input" placeholder="Find a place or lat, lng" autocomplete="off" maxlength="180"><button id="search-submit" type="submit" aria-label="Search"><svg class="icon"><use href="#i-arrow"/></svg></button></form>
+            <div id="search-results" class="search-results" hidden></div>
+          </div>
+          <button class="map-location icon-button" data-map-control id="locate-button" title="Use my location" aria-label="Use my location"><svg class="icon"><use href="#i-target"/></svg></button>
+          <div class="map-status" id="map-status" role="status" hidden data-map-control></div>
+          <div class="map-right-controls" data-map-control><div class="map-control-group"><button id="zoom-in" aria-label="Zoom in" title="Zoom in (+)"><svg class="icon"><use href="#i-plus"/></svg></button><button id="zoom-out" aria-label="Zoom out" title="Zoom out (−)"><svg class="icon"><use href="#i-minus"/></svg></button></div><button id="fit-points" class="map-square" aria-label="Fit all points on the map" title="Fit all points (changes map scale)" disabled><svg class="icon"><use href="#i-fit"/></svg></button><button id="lock-zoom" class="map-square" aria-label="Lock map zoom" title="Lock map zoom to hold spacing" aria-pressed="false"><svg class="icon"><use href="#i-unlock"/></svg></button></div>
+          <div class="empty-map-hint" id="empty-map-hint"><span class="hint-symbol">✳</span><div><strong>Every constellation starts somewhere.</strong><span>Click the map to place your first point.</span></div></div>
+          <div class="map-bottom-tools" data-map-control><div class="segmented mode-switch" role="group" aria-label="Map interaction mode"><button id="mode-plot" class="active" aria-pressed="true"><svg class="icon"><use href="#i-plus"/></svg>Plot <kbd>P</kbd></button><button id="mode-pan" aria-pressed="false"><svg class="icon"><use href="#i-hand"/></svg>Navigate <kbd>V</kbd></button></div><span class="tool-divider"></span><button id="undo" class="icon-button" aria-label="Undo" title="Undo (Ctrl/⌘ Z)" disabled><svg class="icon"><use href="#i-undo"/></svg></button><button id="redo" class="icon-button" aria-label="Redo" title="Redo (Ctrl/⌘ Shift Z)" disabled><svg class="icon"><use href="#i-redo"/></svg></button></div>
+          <div class="map-attribution" data-map-control>© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a></div>
+          <div class="north-mark" aria-hidden="true">N<span>↑</span></div>
+        </div>
+      </div>
+      <div class="map-footer"><span id="cursor-coordinates">38.89770, −77.03650</span><span id="zoom-label">Zoom 13 <span class="footer-dot">·</span> Scale unlocked</span></div>
+    </section>
+    <aside class="sidebar export-panel" id="export-panel" aria-label="Export your constellation">
+      <div class="section-heading"><span class="eyebrow">03 / KEEP THE PATTERN</span><h2>Your constellation</h2><p>The places. Not the map.</p></div>
+      <div class="preview-stage checker" id="preview-stage"><div id="preview-art"></div><div id="preview-empty"><span class="preview-empty-symbol" aria-hidden="true">✦</span><p>Your pattern will<br>take shape here.</p></div></div>
+      <div class="preview-controls"><span>Preview only</span><div class="preview-backgrounds" role="group" aria-label="Preview background, not exported"><button class="checker active" data-preview="checker" aria-label="Preview on transparency checkerboard" aria-pressed="true"></button><button class="light" data-preview="light" aria-label="Preview on white" aria-pressed="false"></button><button class="dark" data-preview="dark" aria-label="Preview on dark" aria-pressed="false"></button></div><span class="fit-label">Fit view</span></div>
+      <dl class="export-details"><div><dt>Points</dt><dd id="export-count">—</dd></div><div><dt>Output size</dt><dd id="export-dimensions">—</dd></div><div><dt>Canvas</dt><dd>Transparent</dd></div></dl>
+      <div class="export-scale"><svg class="icon"><use href="#i-check"/></svg>1 map pixel = 1 export pixel</div>
+      <button id="export-png" class="button primary export-button" disabled><svg class="icon"><use href="#i-download"/></svg><span>Export PNG</span><small>IMAGE</small></button>
+      <button id="export-svg" class="button export-button" disabled><svg class="icon"><use href="#i-download"/></svg><span>Export SVG</span><small>VECTOR</small></button>
+      <p class="export-caption">Just your icons. No map, labels, or coordinates.<br>Tight crop with a 1 px safety edge.</p>
+      <div id="export-warning" class="export-warning" role="status" hidden></div>
+      <div class="precision-card"><span class="precision-icon"><svg class="icon"><use href="#i-lock"/></svg></span><h3>Spacing stays put.</h3><p>Export only trims the surrounding canvas. Your point positions, sizes, and spacing stay exactly as plotted.</p><div>Lock the map zoom to keep your current scale.</div></div>
+      <button id="save-backup-secondary" class="backup-link text-button"><svg class="icon"><use href="#i-folder"/></svg>Save an editable project backup</button>
+    </aside>
+  </main>
+  <footer class="app-footer"><span>MAP-TO-CONSTELLATION <span class="footer-dot">/</span> A LITTLE GEOGRAPHY. A LITTLE YOU.</span><span>Local-first <span class="footer-dot">·</span> PNG + SVG</span></footer>
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <dialog id="help-dialog"><div class="dialog-heading"><span class="eyebrow">A FIELD GUIDE</span><button class="icon-button" data-close-dialog aria-label="Close help"><svg class="icon"><use href="#i-close"/></svg></button></div><h2>Real places. Your pattern.</h2><div class="help-step"><span>01</span><div><h3>Find somewhere that matters.</h3><p>Search for a place or enter latitude, longitude. Drag to pan; use the wheel, a pinch, or + / − to zoom.</p></div></div><div class="help-step"><span>02</span><div><h3>Make your marks.</h3><p>Choose a shape, any color, and size. In Plot mode, click or tap the map. Select an existing point to style it individually. Choose Done editing to set the style for new points. Use exact coordinate entry for precise locations.</p></div></div><div class="help-step"><span>03</span><div><h3>Keep the pattern, leave the map.</h3><p>PNG and SVG contain all your icons, including points outside the viewport. Export uses the current map zoom, translates the whole pattern together, and crops around the full icon outlines. Nothing is fit, stretched, or independently repositioned.</p></div></div><div class="help-notes"><p><strong>Scale:</strong> The preview fits the card; the actual files preserve the map's pixel spacing. Zooming deliberately changes map scale. Use the lock button to prevent zoom changes. PNG is 1×; SVG has matching intrinsic dimensions.</p><p><strong>Saving:</strong> This browser saves your project locally. Export a JSON backup before clearing browser data or switching devices. Opening a backup restores geographic coordinates, styling, world copies, and zoom.</p><p><strong>Privacy & connectivity:</strong> No account or application server. Your points stay in this browser unless you save a file. Viewing a map sends tile-area requests to OpenStreetMap. Place search sends your submitted query to Nominatim. Live maps and place search require internet and a localhost or HTTPS page.</p><p><strong>Limits:</strong> 2,000 points. PNG: 8,192 px per side and 16 megapixels; larger patterns remain available as SVG. Map coverage ends at ±85.0511° latitude. Screen-space Web Mercator spacing is preserved, not ground-distance ratios.</p><p><strong>Keys:</strong> P: plot · V: navigate · Esc: deselect · Delete: remove selected · Ctrl/⌘ Z: undo · Ctrl/⌘ Shift Z: redo. With the map focused, arrow keys pan and Enter plots at the center.</p></div><button class="button primary full" data-close-dialog>Let's make something</button></dialog>
+  <dialog id="confirm-dialog"><div class="dialog-heading"><span class="eyebrow">YOUR PROJECT</span></div><h2 id="confirm-title">Start fresh?</h2><p id="confirm-message"></p><div class="confirm-actions"><button class="button" id="confirm-cancel">Cancel</button><button class="button primary" id="confirm-ok">Continue</button></div></dialog>
+  <noscript><div class="noscript">This app needs JavaScript enabled to plot and export points.</div></noscript>
+  <script src="src/core.js"></script>
+  <script src="src/map.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>

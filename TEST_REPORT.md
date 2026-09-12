@@ -1,5 +1,9 @@
 # Map-to-Constellation — test report
 
+## Apple UI redesign — September 12, 2026
+
+Replaced the presentation layer with system typography, semantic light/dark colors, a desktop sidebar and export inspector, touch layouts, and reduced-transparency/motion fallbacks. All 31 core tests and the build passed. Static checks confirm that all app control IDs are preserved and unique. No browser interaction or visual QA was performed for this redesign.
+
 ## Publication checks — September 12, 2026
 
 All 31 core tests passed. JavaScript syntax checks and the Sites static build passed; the local HTTP preview returned 200. In the Codex in-app browser, the example loaded, keyboard selection retained focus in both the point list and map overlay, and PNG export reported success at 230 × 299 pixels with no captured browser errors. The downloaded PNG bytes were not inspected in this run.

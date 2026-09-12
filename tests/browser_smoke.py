@@ -74,7 +74,7 @@ def run():
         if executable: opts['executable_path']=executable
         browser=pw.chromium.launch(**opts)
         context=browser.new_context(viewport={'width':1440,'height':1024},device_scale_factor=1,accept_downloads=True)
-        context.route('https://tile.openstreetmap.org/**',lambda r:r.fulfill(status=200,content_type='image/svg+xml',body=TEST_TILE))
+        context.route('https://tiles.openfreemap.org/**',lambda r:r.abort())
         context.route('https://nominatim.openstreetmap.org/**',lambda r:r.fulfill(status=200,content_type='application/json',body=json.dumps([{'lat':'40.7128','lon':'-74.0060','display_name':'Example search result <img src=x onerror=alert(1)>'}]),headers={'Access-Control-Allow-Origin':'*'}))
         page=context.new_page();page.set_default_timeout(6000);errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
         boot(page,base)
@@ -211,7 +211,7 @@ def run():
         passed('Desktop interaction suite produces no uncaught JavaScript errors')
 
         mobile_context=browser.new_context(viewport={'width':390,'height':844},device_scale_factor=2,is_mobile=True,has_touch=True,accept_downloads=True)
-        mobile_context.route('https://tile.openstreetmap.org/**',lambda r:r.fulfill(status=200,content_type='image/svg+xml',body=TEST_TILE))
+        mobile_context.route('https://tiles.openfreemap.org/**',lambda r:r.abort())
         mobile=mobile_context.new_page();mobile_errors=[];mobile.on('pageerror',lambda e:mobile_errors.append(str(e)))
         boot(mobile,base);assert mobile.evaluate('document.documentElement.scrollWidth')<=390
         mb=mobile.locator('#map').bounding_box();mobile.touchscreen.tap(mb['x']+140,mb['y']+250);wait(mobile);assert len(state(mobile)['points'])==1

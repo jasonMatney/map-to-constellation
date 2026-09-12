@@ -1,5 +1,9 @@
 # Map-to-Constellation — test report
 
+## Vector basemap update — September 12, 2026
+
+Replaced raster tiles with OpenFreeMap vector styles through MapLibre 6.9.0, with a bundled worker and automatic light/dark selection. The local browser loaded live Positron streets and labels with no captured errors. All 31 core tests passed; dependency installation reported zero vulnerabilities. The broad browser suite and dark appearance were not exercised in this update.
+
 ## Apple UI redesign — September 12, 2026
 
 Replaced the presentation layer with system typography, semantic light/dark colors, a desktop sidebar and export inspector, touch layouts, and reduced-transparency/motion fallbacks. All 31 core tests and the build passed. Static checks confirm that all app control IDs are preserved and unique. No browser interaction or visual QA was performed for this redesign.

@@ -1,18 +1,19 @@
-/* Small, dependency-free Web Mercator map. One unwrapped coordinate frame. */
+/* Web Mercator editing surface with a synchronized vector basemap. */
 (function () {
   'use strict';
   const C=window.ConstellationCore;
   class ConstellationMap {
     constructor(el,options) {
       this.el=el; this.options=options; this.zoom=options.view.zoom; this.center={...options.view.center}; this.locked=options.view.locked;
-      this.mode='plot';this.pointers=new Map();this.tiles=new Map();this.gesture=null;this.frame=0;this.lastWheel=0;this.tileTimer=0;
-      this.tileRoot=el.querySelector('.tile-layer');this.svg=el.querySelector('.point-layer');this.tileFailures=0;this.tileSuccess=0;
+      this.mode='plot';this.pointers=new Map();this.gesture=null;this.frame=0;this.lastWheel=0;
+      this.tileRoot=el.querySelector('.tile-layer');this.svg=el.querySelector('.point-layer');
       this.networkAllowed=/^https?:$/.test(location.protocol);this.width=el.clientWidth;this.height=el.clientHeight;
       this.observer=new ResizeObserver(()=>{this.width=el.clientWidth;this.height=el.clientHeight;this.scheduleRender();});this.observer.observe(el);
       el.addEventListener('pointerdown',e=>this.pointerDown(e));el.addEventListener('pointermove',e=>this.pointerMove(e));
       el.addEventListener('pointerup',e=>this.pointerEnd(e));el.addEventListener('pointercancel',e=>this.pointerEnd(e,true));
       el.addEventListener('wheel',e=>this.wheel(e),{passive:false});
       el.addEventListener('keydown',e=>this.keydown(e));
+      this.initBasemap();
       this.render();
       if(!this.networkAllowed)options.onTileStatus('local');
     }
@@ -78,38 +79,49 @@
       this.svg.setAttribute('viewBox',`0 0 ${this.width} ${this.height}`);
       // Apply an identical common translation to the canonical projected positions.
       this.options.onRender(this);
-      this.positionExistingTiles();clearTimeout(this.tileTimer);
-      this.tileTimer=setTimeout(()=>this.renderTiles(),this.pointers.size?100:30);
+      this.syncBasemap();
     }
-    positionExistingTiles(){
-      const z=Math.floor(this.zoom),scale=2**(this.zoom-z);
-      for(const entry of this.tiles.values()){
-        if(entry.z!==z){entry.el.style.visibility='hidden';continue;}entry.el.style.visibility='visible';
-        entry.el.style.transform=`translate(${entry.x*256*scale-this.origin.x}px,${entry.y*256*scale-this.origin.y}px)`;
-        entry.el.style.width=`${256*scale+.1}px`;entry.el.style.height=`${256*scale+.1}px`;
-      }
-    }
-    renderTiles(){
+    basemapStyle(){return `https://tiles.openfreemap.org/styles/${this.appearance.matches?'dark':'positron'}`;}
+    initBasemap(){
       if(!this.networkAllowed)return;
-      const z=Math.floor(this.zoom),scale=2**(this.zoom-z),tileSize=256*scale,n=2**z;
-      const x0=Math.floor(this.origin.x/tileSize),x1=Math.floor((this.origin.x+this.width-1)/tileSize);
-      const y0=Math.max(0,Math.floor(this.origin.y/tileSize)),y1=Math.min(n-1,Math.floor((this.origin.y+this.height-1)/tileSize));
-      const needed=new Set();
-      // Only currently visible tiles; no prefetch, offline cache, or cache bypass.
-      for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){
-        const key=`${z}/${x}/${y}`;needed.add(key);
-        if(!this.tiles.has(key)){
-          const img=document.createElement('img');img.alt='';img.draggable=false;img.decoding='async';img.referrerPolicy='strict-origin-when-cross-origin';
-          img.addEventListener('load',()=>{this.tileSuccess++;this.options.onTileStatus('ready');});
-          img.addEventListener('error',()=>{this.tileFailures++;img.classList.add('tile-failed');if(this.tileFailures>2)this.options.onTileStatus('error');});
-          img.src=`https://tile.openstreetmap.org/${z}/${C.mod(x,n)}/${y}.png`;
-          this.tileRoot.append(img);this.tiles.set(key,{el:img,x,y,z});
-        }
+      if(!this.appearance){
+        this.appearance=window.matchMedia('(prefers-color-scheme: dark)');
+        this.appearance.addEventListener('change',()=>{if(this.basemap)this.basemap.setStyle(this.basemapStyle());});
       }
-      for(const [key,entry] of this.tiles)if(!needed.has(key)){entry.el.remove();this.tiles.delete(key);}
-      this.positionExistingTiles();
+      try{
+        this.basemap=new window.maplibregl.Map({
+          container:this.tileRoot,style:this.basemapStyle(),
+          center:[this.center.lng,this.center.lat],zoom:this.zoom-1,
+          interactive:false,attributionControl:false,renderWorldCopies:true,
+          // Our editor uses 256px worlds, MapLibre uses 512px worlds.
+          // Avoid the renderer independently shifting the center near the poles.
+          transformConstrain:(lngLat,zoom)=>({center:lngLat,zoom}),
+          minZoom:0,maxZoom:22,fadeDuration:0,trackResize:false,
+          canvasContextAttributes:{antialias:true}
+        });
+        this.basemap.on('style.load',()=>{
+          if(!this.appearance.matches){
+            for(const [layer,color] of Object.entries({water:'#cfe3ef',park:'#e4eddd',landcover_wood:'#dbe7d4',building:'#e8e6e1'})){
+              if(this.basemap.getLayer(layer))this.basemap.setPaintProperty(layer,'fill-color',color);
+            }
+          }
+        });
+        this.basemap.on('error',()=>this.options.onTileStatus('error'));
+        this.basemap.on('idle',()=>this.options.onTileStatus('ready'));
+        this.basemap.getCanvas().setAttribute('tabindex','-1');
+      }catch(error){this.options.onTileStatus('error');}
     }
-    retryTiles(){for(const t of this.tiles.values())t.el.remove();this.tiles.clear();this.tileFailures=0;this.scheduleRender();}
+    syncBasemap(){
+      if(!this.basemap)return;
+      if(this.basemapWidth!==this.width||this.basemapHeight!==this.height){
+        this.basemap.resize();this.basemapWidth=this.width;this.basemapHeight=this.height;
+      }
+      this.basemap.jumpTo({center:[this.center.lng,this.center.lat],zoom:this.zoom-1,bearing:0,pitch:0});
+    }
+    retryTiles(){
+      if(this.basemap){this.basemap.remove();this.basemap=null;}
+      this.tileRoot.replaceChildren();this.initBasemap();this.scheduleRender();
+    }
   }
   window.ConstellationMap=ConstellationMap;
 })();

@@ -6,3 +6,4 @@ __pycache__/
 tests/artifacts/
 .env
 .env.*
+src/basemap-runtime.js

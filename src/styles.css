@@ -327,3 +327,7 @@ dialog p { color: var(--secondary); font-size: .875rem; line-height: 1.6; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Keep provider credits readable on compact map viewports. */
+.map-attribution { max-width: 100%; text-align: right; font-size: .75rem; }
+.tile-layer .maplibregl-canvas { outline: none; }

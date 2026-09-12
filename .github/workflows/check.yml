@@ -10,6 +10,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: npm ci
       - run: npm test
       - run: npm run build
       - run: git diff --exit-code -- Map-to-Constellation.html

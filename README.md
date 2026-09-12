@@ -4,7 +4,7 @@ A single-user browser app for turning geographic locations into a tightly croppe
 
 ## Start the app
 
-Unzip the project before launching it. Keep the extracted files together.
+Unzip the project before launching it. Keep the extracted files together. When running from source, run `npm ci` and `npm run build` once to install MapLibre. The bundled HTML edition needs no installation.
 
 **Windows:** double-click `Start.bat`.
 
@@ -30,7 +30,7 @@ The launcher uses Python's standard library, starts a local server, and opens th
 npm start
 ```
 
-Then open `http://localhost:8787`. Node.js 18 or newer is supported. There is no `npm install` step and no runtime package dependency.
+Then open `http://localhost:8787`. Node.js 18 or newer is supported. For the source checkout, run `npm ci` and `npm run build` once to install the pinned MapLibre basemap renderer. The generated single-file edition bundles it.
 
 The launchers require **Python 3 or Node.js** to already be installed. Sites hosting is configured for a private hosted edition; local launchers remain available.
 
@@ -94,7 +94,7 @@ Use **Project → Save project backup** to download a `.constellation.json` file
 
 Undo/redo keeps up to 60 edit snapshots in the current tab. History does not persist across page reloads. Invalid project imports are rejected before the current project is replaced. If existing browser data is corrupt or cannot be saved, the app shows a notice rather than silently overwriting it. A change from another tab pauses automatic saving in this tab to avoid overwriting that version.
 
-The **application itself does not upload your plotted points**. Ordinary map navigation sends visible-tile requests to OpenStreetMap, which reveals the viewed area and normal network information to that service. Place-name search sends the query you explicitly submit to Nominatim. Search does not autocomplete or run while you type, and requests are throttled. Export generation occurs in your browser and does not request map tiles.
+The **application itself does not upload your plotted points**. Ordinary map navigation sends vector-tile, style, and font requests to OpenFreeMap, which reveals the viewed area and normal network information to that service. Place-name search sends the query you explicitly submit to Nominatim. Search does not autocomplete or run while you type, and requests are throttled. Export generation occurs in your browser and does not request map tiles.
 
 ## Limits and failure behavior
 
@@ -146,7 +146,7 @@ python3 tests/browser_smoke.py
 
 Set `CHROMIUM_PATH` to use a system Chromium executable. `CONSTELLATION_IN_MEMORY=1` runs QA in an in-memory browser document for environments that block navigation; that mode supplies an in-memory localStorage adapter and cannot verify HTTP-only integrations.
 
-The browser test's external service responses are deterministic test doubles, not real map data. Production application files contain no mock tiles or test geocoder responses.
+Browser QA blocks vector basemap requests and supplies deterministic geocoder test responses; it does not verify live map cartography. Production application files contain no mock tiles or test geocoder responses.
 
 ## Static hosting
 
@@ -154,7 +154,7 @@ Sites publishes the generated `dist/index.html` using `.openai/hosting.json`. Th
 
 For another static host, upload `index.html` and the `src/` folder, or publish the self-contained HTML as `index.html`. No server-side application, runtime environment variables, or API secrets are required.
 
-Public map services have usage policies and no guarantee of availability. This app fetches only visible tiles, retains browser caching behavior, displays map attribution, and performs manually submitted place searches. It does not prefetch tiles or make offline tile downloads. Before wider public deployment, review the providers' policies and use an appropriate dedicated provider if your traffic or use case needs one. The tile URL is in `src/map.js`; the geocoder endpoint is in `src/app.js`; map/search attribution text is in `index.html` and `src/app.js`.
+Public map services have usage policies and no guarantee of availability. The basemap uses OpenFreeMap’s Positron (light) and Dark styles, rendered by MapLibre; it follows the system appearance. Light mode adds soft blue water and muted green parks. This app requests tiles for the current view, retains browser caching behavior, displays map attribution, and performs manually submitted place searches. It does not prefetch tiles or make offline tile downloads. Before wider public deployment, review the providers' policies and use an appropriate dedicated provider if your traffic or use case needs one. The tile URL is in `src/map.js`; the geocoder endpoint is in `src/app.js`; map/search attribution text is in `index.html` and `src/app.js`.
 
 ## Technical references
 
@@ -164,8 +164,8 @@ The Web Mercator tile convention and public-service policies consulted for this 
 OpenStreetMap XYZ/Web Mercator tile convention:
 https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
 
-OpenStreetMap raster tile usage policy:
-https://operations.osmfoundation.org/policies/tiles/
+OpenFreeMap basemap setup and attribution:
+https://openfreemap.org/quick_start/
 
 Nominatim public geocoding usage policy:
 https://operations.osmfoundation.org/policies/nominatim/

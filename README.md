@@ -45,8 +45,9 @@ Opening this file directly from your filesystem enables point editing, coordinat
 1. **Navigate.** Drag to pan; scroll, pinch, or use + / − to zoom. Search for a place or enter `latitude, longitude`. The location button asks for permission before centering on your current location; it does not add a point automatically.
 2. **Plot.** Choose a circle, square, triangle, diamond, star, or hexagon. Pick any hex color or use the full color picker. In Plot mode, click or tap the map. “Add an exact location” accepts numeric coordinates.
 3. **Customize individually.** Select a map icon or an entry in Your points. Changes apply to that point alone. Adjust its name, shape, color, and size. Apply coordinates explicitly to move it. Points themselves cannot accidentally be dragged. “Done editing” returns the palette to the new-point style; plotting while a point is selected copies its style to the new point.
-4. **Check the arrangement.** Pattern hides the basemap in the main workspace without changing coordinates. The export preview is uniformly fitted to its card, not shown at native pixel size. Its checkerboard/white/dark backgrounds are viewing aids only; every export remains transparent.
-5. **Export.** PNG and SVG include **all points**, even those outside the current map viewport. Export uses the current map scale and crops around the full outer boundaries of the icons. It never fits points to an arbitrary output size.
+4. **Choose a basemap.** Map uses OpenFreeMap cartography; Satellite uses Esri World Imagery. Imagery dates and resolution vary by location; it is not a live feed. Switching basemaps does not change coordinates, zoom, or exports.
+5. **Check the arrangement.** Pattern hides the basemap in the main workspace without changing coordinates. The export preview is uniformly fitted to its card, not shown at native pixel size. Its checkerboard/white/dark backgrounds are viewing aids only; every export remains transparent.
+6. **Export.** PNG and SVG include **all points**, even those outside the current map viewport. Export uses the current map scale and crops around the full outer boundaries of the icons. It never fits points to an arbitrary output size.
 
 Project → Load example pattern offers an editable seven-point example. `examples/favorite-places.constellation.json` is also included.
 
@@ -94,7 +95,7 @@ Use **Project → Save project backup** to download a `.constellation.json` file
 
 Undo/redo keeps up to 60 edit snapshots in the current tab. History does not persist across page reloads. Invalid project imports are rejected before the current project is replaced. If existing browser data is corrupt or cannot be saved, the app shows a notice rather than silently overwriting it. A change from another tab pauses automatic saving in this tab to avoid overwriting that version.
 
-The **application itself does not upload your plotted points**. Ordinary map navigation sends vector-tile, style, and font requests to OpenFreeMap, which reveals the viewed area and normal network information to that service. Place-name search sends the query you explicitly submit to Nominatim. Search does not autocomplete or run while you type, and requests are throttled. Export generation occurs in your browser and does not request map tiles.
+The **application itself does not upload your plotted points**. Ordinary map navigation sends vector-tile, style, and font requests to OpenFreeMap, which reveals the viewed area and normal network information to that service. Satellite view sends imagery tile requests for the viewed area to Esri. Place-name search sends the query you explicitly submit to Nominatim. Search does not autocomplete or run while you type, and requests are throttled. Export generation occurs in your browser and does not request map tiles.
 
 ## Limits and failure behavior
 

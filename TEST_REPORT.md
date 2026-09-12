@@ -1,5 +1,9 @@
 # Map-to-Constellation — test report
 
+## Satellite basemap — September 12, 2026
+
+Added Esri World Imagery with provider credits and a Map/Satellite/Pattern switch. All 33 tests pass, including view/zoom-lock preservation when switching basemaps and satellite stability across light/dark appearance. Build passed; a live imagery tile returned HTTP 200 with image/jpeg content. This addition did not receive a new visual browser QA pass.
+
 ## Visual browser QA — September 12, 2026
 
 Inspected the live local app at 1440 × 1000, 820 × 1000, 390 × 844, and 320 × 740. Phone and tablet DOM width checks found no horizontal overflow. Verified actual keyboard color editing, point selection, delete/undo restoration to seven points, PNG and SVG export success, pattern view, and zoom lock. No browser console errors were captured in the final checks; downloaded file bytes were not inspected in this pass.

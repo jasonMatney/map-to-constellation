@@ -199,7 +199,13 @@
   $('zoom-in').onclick=()=>map.zoomBy(1);$('zoom-out').onclick=()=>map.zoomBy(-1);
   $('fit-points').onclick=()=>{map.fit(state.points);if(map.locked)toast('Centered on your points. Zoom stays locked.');};
   $('lock-zoom').onclick=()=>{map.setLocked(!map.locked);renderZoom(map);toast(map.locked?'Map scale locked. Pan freely; spacing will not change.':'Map scale unlocked. Zoom changes point spacing on the map.');};
-  for(const kind of ['map','pattern'])$(`view-${kind}`).onclick=()=>{$('map').classList.toggle('pattern-mode',kind==='pattern');for(const k of ['map','pattern']){$(`view-${k}`).classList.toggle('active',k===kind);$(`view-${k}`).setAttribute('aria-pressed',String(k===kind));}};
+  for(const kind of ['map','satellite','pattern'])$(`view-${kind}`).onclick=()=>{
+    $('map').classList.toggle('pattern-mode',kind==='pattern');
+    if(kind!=='pattern')map.setBasemap(kind);
+    $('map-attribution-vector').hidden=map.basemapKind==='satellite';
+    $('map-attribution-satellite').hidden=map.basemapKind!=='satellite';
+    for(const k of ['map','satellite','pattern']){$(`view-${k}`).classList.toggle('active',k===kind);$(`view-${k}`).setAttribute('aria-pressed',String(k===kind));}
+  };
   $('undo').onclick=undo;$('redo').onclick=redo;
   $('clear-points').onclick=()=>ask('Clear all points?',`Remove all ${state.points.length} points from this project? Undo can restore them.`,()=>{change(()=>{state.points=[];selected=null;});},'Clear points');
   $('try-example').onclick=loadDemo;$('demo-project').onclick=()=>{closeMenu();loadDemo();};

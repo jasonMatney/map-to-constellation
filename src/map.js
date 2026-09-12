@@ -81,13 +81,27 @@
       this.options.onRender(this);
       this.syncBasemap();
     }
-    basemapStyle(){return `https://tiles.openfreemap.org/styles/${this.appearance.matches?'dark':'positron'}`;}
+    basemapStyle(){
+      if(this.basemapKind==='satellite')return {
+        version:8,
+        sources:{satellite:{type:'raster',tileSize:256,maxzoom:23,
+          tiles:['https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+          attribution:'Source: Esri, Vantor, Earthstar Geographics, and the GIS User Community'}},
+        layers:[{id:'satellite',type:'raster',source:'satellite',paint:{'raster-fade-duration':0}}]
+      };
+      return `https://tiles.openfreemap.org/styles/${this.appearance.matches?'dark':'positron'}`;
+    }
+    setBasemap(kind){
+      if(!['map','satellite'].includes(kind)||this.basemapKind===kind)return;
+      this.basemapKind=kind;
+      if(this.basemap){this.options.onTileStatus('loading');this.basemap.setStyle(this.basemapStyle());}
+    }
     initBasemap(){
       if(!this.networkAllowed)return;
       this.options.onTileStatus('loading');
       if(!this.appearance){
         this.appearance=window.matchMedia('(prefers-color-scheme: dark)');
-        this.appearance.addEventListener('change',()=>{if(this.basemap)this.basemap.setStyle(this.basemapStyle());});
+        this.appearance.addEventListener('change',()=>{if(this.basemap&&this.basemapKind!=='satellite')this.basemap.setStyle(this.basemapStyle());});
       }
       try{
         this.basemap=new window.maplibregl.Map({
@@ -101,6 +115,7 @@
           canvasContextAttributes:{antialias:true}
         });
         this.basemap.on('style.load',()=>{
+          if(this.basemapKind==='satellite')return;
           if(this.appearance.matches){
             for(const layer of this.basemap.getStyle().layers){
               if(layer.type==='background')this.basemap.setPaintProperty(layer.id,'background-color','#20262d');

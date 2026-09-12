@@ -334,3 +334,7 @@ dialog p { color: var(--secondary); font-size: .875rem; line-height: 1.6; }
 /* Keep provider credits readable on compact map viewports. */
 .map-attribution { max-width: 100%; text-align: right; font-size: .75rem; }
 .tile-layer .maplibregl-canvas { outline: none; }
+
+/* Three basemap choices wrap above the map on compact screens. */
+.map-heading { flex-wrap: wrap; }
+.view-switch { margin-left: auto; max-width: 100%; }
